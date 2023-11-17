@@ -10,14 +10,20 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "cost",
+      "fieldType": "BigDecimal"
+    },
+    {
       "fieldName": "date",
-      "fieldType": "LocalDate"
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
     }
   ],
   "name": "ConsumptionHistory",
   "pagination": "pagination",
   "relationships": [
     {
+      "otherEntityField": "name",
       "otherEntityName": "householdUtility",
       "relationshipName": "householdUtility",
       "relationshipSide": "right",

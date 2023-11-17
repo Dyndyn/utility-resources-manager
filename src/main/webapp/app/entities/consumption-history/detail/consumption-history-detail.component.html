@@ -20,6 +20,10 @@
         <dd>
           <span>{{ consumptionHistory.consumption }}</span>
         </dd>
+        <dt><span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.cost">Cost</span></dt>
+        <dd>
+          <span>{{ consumptionHistory.cost }}</span>
+        </dd>
         <dt><span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.date">Date</span></dt>
         <dd>
           <span>{{ consumptionHistory.date | formatMediumDate }}</span>
@@ -28,7 +32,7 @@
         <dd>
           <div *ngIf="consumptionHistory.householdUtility">
             <a [routerLink]="['/household-utility', consumptionHistory.householdUtility.id, 'view']">{{
-              consumptionHistory.householdUtility.id
+              consumptionHistory.householdUtility.name
             }}</a>
           </div>
         </dd>

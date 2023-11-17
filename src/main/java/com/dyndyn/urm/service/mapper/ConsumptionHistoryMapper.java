@@ -11,11 +11,12 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface ConsumptionHistoryMapper extends EntityMapper<ConsumptionHistoryDTO, ConsumptionHistory> {
-    @Mapping(target = "householdUtility", source = "householdUtility", qualifiedByName = "householdUtilityId")
+    @Mapping(target = "householdUtility", source = "householdUtility", qualifiedByName = "householdUtilityName")
     ConsumptionHistoryDTO toDto(ConsumptionHistory s);
 
-    @Named("householdUtilityId")
+    @Named("householdUtilityName")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    HouseholdUtilityDTO toDtoHouseholdUtilityId(HouseholdUtility householdUtility);
+    @Mapping(target = "name", source = "name")
+    HouseholdUtilityDTO toDtoHouseholdUtilityName(HouseholdUtility householdUtility);
 }

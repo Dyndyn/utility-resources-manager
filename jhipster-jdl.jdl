@@ -19,6 +19,7 @@ entity UtilityProvider {
 	name String required
     iban String
     usreou String
+    rate BigDecimal required
 }
 
 entity Household {
@@ -35,7 +36,8 @@ entity HouseholdUtility {
 
 entity ConsumptionHistory {
 	consumption BigDecimal required
-    date LocalDate
+    cost BigDecimal
+    date LocalDate required
 }
 
 relationship OneToMany {
@@ -61,8 +63,8 @@ relationship ManyToMany {
 relationship OneToMany {
 	Household to HouseholdUtility{household(address) required}
     UtilityProvider to HouseholdUtility{utilityProvider(name) required}
-    HouseholdUtility to ConsumptionHistory{householdUtility required}
+    HouseholdUtility to ConsumptionHistory{householdUtility(name) required}
 }
 
 use mapstruct, serviceImpl, pagination for all
-
+use filter for ConsumptionHistory

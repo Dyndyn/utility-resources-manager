@@ -21,6 +21,7 @@ describe('ConsumptionHistory Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             consumption: expect.any(Object),
+            cost: expect.any(Object),
             date: expect.any(Object),
             householdUtility: expect.any(Object),
           }),
@@ -34,6 +35,7 @@ describe('ConsumptionHistory Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             consumption: expect.any(Object),
+            cost: expect.any(Object),
             date: expect.any(Object),
             householdUtility: expect.any(Object),
           }),

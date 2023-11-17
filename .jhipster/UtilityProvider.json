@@ -16,6 +16,11 @@
     {
       "fieldName": "usreou",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "rate",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
     }
   ],
   "name": "UtilityProvider",

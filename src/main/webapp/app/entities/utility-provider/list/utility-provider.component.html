@@ -56,6 +56,12 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="rate">
+            <div class="d-flex">
+              <span jhiTranslate="utilityResourcesManagerApp.utilityProvider.rate">Rate</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="utility.name">
             <div class="d-flex">
               <span jhiTranslate="utilityResourcesManagerApp.utilityProvider.utility">Utility</span>
@@ -73,6 +79,7 @@
           <td>{{ utilityProvider.name }}</td>
           <td>{{ utilityProvider.iban }}</td>
           <td>{{ utilityProvider.usreou }}</td>
+          <td>{{ utilityProvider.rate }}</td>
           <td>
             <div *ngIf="utilityProvider.utility">
               <a [routerLink]="['/utility', utilityProvider.utility.id, 'view']">{{ utilityProvider.utility.name }}</a>

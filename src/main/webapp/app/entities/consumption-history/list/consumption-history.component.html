@@ -44,13 +44,19 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="cost">
+            <div class="d-flex">
+              <span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.cost">Cost</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="date">
             <div class="d-flex">
               <span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.date">Date</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="householdUtility.id">
+          <th scope="col" jhiSortBy="householdUtility.name">
             <div class="d-flex">
               <span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.householdUtility">Household Utility</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -65,11 +71,12 @@
             <a [routerLink]="['/consumption-history', consumptionHistory.id, 'view']">{{ consumptionHistory.id }}</a>
           </td>
           <td>{{ consumptionHistory.consumption }}</td>
+          <td>{{ consumptionHistory.cost }}</td>
           <td>{{ consumptionHistory.date | formatMediumDate }}</td>
           <td>
             <div *ngIf="consumptionHistory.householdUtility">
               <a [routerLink]="['/household-utility', consumptionHistory.householdUtility.id, 'view']">{{
-                consumptionHistory.householdUtility.id
+                consumptionHistory.householdUtility.name
               }}</a>
             </div>
           </td>

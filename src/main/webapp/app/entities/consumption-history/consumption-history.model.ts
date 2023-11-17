@@ -4,8 +4,9 @@ import { IHouseholdUtility } from 'app/entities/household-utility/household-util
 export interface IConsumptionHistory {
   id: number;
   consumption?: number | null;
+  cost?: number | null;
   date?: dayjs.Dayjs | null;
-  householdUtility?: Pick<IHouseholdUtility, 'id'> | null;
+  householdUtility?: Pick<IHouseholdUtility, 'id' | 'name'> | null;
 }
 
 export type NewConsumptionHistory = Omit<IConsumptionHistory, 'id'> & { id: null };

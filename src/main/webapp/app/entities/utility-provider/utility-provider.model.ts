@@ -5,6 +5,7 @@ export interface IUtilityProvider {
   name?: string | null;
   iban?: string | null;
   usreou?: string | null;
+  rate?: number | null;
   utility?: Pick<IUtility, 'id' | 'name'> | null;
 }
 

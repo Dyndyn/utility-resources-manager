@@ -21,6 +21,7 @@
       "name": "Name",
       "iban": "Iban",
       "usreou": "Usreou",
+      "rate": "Rate",
       "householdUtility": "Household Utility",
       "utility": "Utility"
     }

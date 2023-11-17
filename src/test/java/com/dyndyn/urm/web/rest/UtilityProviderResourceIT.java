@@ -1,5 +1,6 @@
 package com.dyndyn.urm.web.rest;
 
+import static com.dyndyn.urm.web.rest.TestUtil.sameNumber;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Mockito.*;
@@ -14,6 +15,7 @@ import com.dyndyn.urm.service.UtilityProviderService;
 import com.dyndyn.urm.service.dto.UtilityProviderDTO;
 import com.dyndyn.urm.service.mapper.UtilityProviderMapper;
 import jakarta.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -50,6 +52,9 @@ class UtilityProviderResourceIT {
     private static final String DEFAULT_USREOU = "AAAAAAAAAA";
     private static final String UPDATED_USREOU = "BBBBBBBBBB";
 
+    private static final BigDecimal DEFAULT_RATE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_RATE = new BigDecimal(2);
+
     private static final String ENTITY_API_URL = "/api/utility-providers";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -83,7 +88,11 @@ class UtilityProviderResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static UtilityProvider createEntity(EntityManager em) {
-        UtilityProvider utilityProvider = new UtilityProvider().name(DEFAULT_NAME).iban(DEFAULT_IBAN).usreou(DEFAULT_USREOU);
+        UtilityProvider utilityProvider = new UtilityProvider()
+            .name(DEFAULT_NAME)
+            .iban(DEFAULT_IBAN)
+            .usreou(DEFAULT_USREOU)
+            .rate(DEFAULT_RATE);
         // Add required entity
         Utility utility;
         if (TestUtil.findAll(em, Utility.class).isEmpty()) {
@@ -104,7 +113,11 @@ class UtilityProviderResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static UtilityProvider createUpdatedEntity(EntityManager em) {
-        UtilityProvider utilityProvider = new UtilityProvider().name(UPDATED_NAME).iban(UPDATED_IBAN).usreou(UPDATED_USREOU);
+        UtilityProvider utilityProvider = new UtilityProvider()
+            .name(UPDATED_NAME)
+            .iban(UPDATED_IBAN)
+            .usreou(UPDATED_USREOU)
+            .rate(UPDATED_RATE);
         // Add required entity
         Utility utility;
         if (TestUtil.findAll(em, Utility.class).isEmpty()) {
@@ -142,6 +155,7 @@ class UtilityProviderResourceIT {
         assertThat(testUtilityProvider.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testUtilityProvider.getIban()).isEqualTo(DEFAULT_IBAN);
         assertThat(testUtilityProvider.getUsreou()).isEqualTo(DEFAULT_USREOU);
+        assertThat(testUtilityProvider.getRate()).isEqualByComparingTo(DEFAULT_RATE);
     }
 
     @Test
@@ -187,6 +201,26 @@ class UtilityProviderResourceIT {
 
     @Test
     @Transactional
+    void checkRateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = utilityProviderRepository.findAll().size();
+        // set the field null
+        utilityProvider.setRate(null);
+
+        // Create the UtilityProvider, which fails.
+        UtilityProviderDTO utilityProviderDTO = utilityProviderMapper.toDto(utilityProvider);
+
+        restUtilityProviderMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(utilityProviderDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<UtilityProvider> utilityProviderList = utilityProviderRepository.findAll();
+        assertThat(utilityProviderList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllUtilityProviders() throws Exception {
         // Initialize the database
         utilityProviderRepository.saveAndFlush(utilityProvider);
@@ -199,7 +233,8 @@ class UtilityProviderResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(utilityProvider.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].iban").value(hasItem(DEFAULT_IBAN)))
-            .andExpect(jsonPath("$.[*].usreou").value(hasItem(DEFAULT_USREOU)));
+            .andExpect(jsonPath("$.[*].usreou").value(hasItem(DEFAULT_USREOU)))
+            .andExpect(jsonPath("$.[*].rate").value(hasItem(sameNumber(DEFAULT_RATE))));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -233,7 +268,8 @@ class UtilityProviderResourceIT {
             .andExpect(jsonPath("$.id").value(utilityProvider.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.iban").value(DEFAULT_IBAN))
-            .andExpect(jsonPath("$.usreou").value(DEFAULT_USREOU));
+            .andExpect(jsonPath("$.usreou").value(DEFAULT_USREOU))
+            .andExpect(jsonPath("$.rate").value(sameNumber(DEFAULT_RATE)));
     }
 
     @Test
@@ -255,7 +291,7 @@ class UtilityProviderResourceIT {
         UtilityProvider updatedUtilityProvider = utilityProviderRepository.findById(utilityProvider.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedUtilityProvider are not directly saved in db
         em.detach(updatedUtilityProvider);
-        updatedUtilityProvider.name(UPDATED_NAME).iban(UPDATED_IBAN).usreou(UPDATED_USREOU);
+        updatedUtilityProvider.name(UPDATED_NAME).iban(UPDATED_IBAN).usreou(UPDATED_USREOU).rate(UPDATED_RATE);
         UtilityProviderDTO utilityProviderDTO = utilityProviderMapper.toDto(updatedUtilityProvider);
 
         restUtilityProviderMockMvc
@@ -273,6 +309,7 @@ class UtilityProviderResourceIT {
         assertThat(testUtilityProvider.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testUtilityProvider.getIban()).isEqualTo(UPDATED_IBAN);
         assertThat(testUtilityProvider.getUsreou()).isEqualTo(UPDATED_USREOU);
+        assertThat(testUtilityProvider.getRate()).isEqualByComparingTo(UPDATED_RATE);
     }
 
     @Test
@@ -354,7 +391,7 @@ class UtilityProviderResourceIT {
         UtilityProvider partialUpdatedUtilityProvider = new UtilityProvider();
         partialUpdatedUtilityProvider.setId(utilityProvider.getId());
 
-        partialUpdatedUtilityProvider.name(UPDATED_NAME).iban(UPDATED_IBAN).usreou(UPDATED_USREOU);
+        partialUpdatedUtilityProvider.name(UPDATED_NAME).iban(UPDATED_IBAN).usreou(UPDATED_USREOU).rate(UPDATED_RATE);
 
         restUtilityProviderMockMvc
             .perform(
@@ -371,6 +408,7 @@ class UtilityProviderResourceIT {
         assertThat(testUtilityProvider.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testUtilityProvider.getIban()).isEqualTo(UPDATED_IBAN);
         assertThat(testUtilityProvider.getUsreou()).isEqualTo(UPDATED_USREOU);
+        assertThat(testUtilityProvider.getRate()).isEqualByComparingTo(UPDATED_RATE);
     }
 
     @Test
@@ -385,7 +423,7 @@ class UtilityProviderResourceIT {
         UtilityProvider partialUpdatedUtilityProvider = new UtilityProvider();
         partialUpdatedUtilityProvider.setId(utilityProvider.getId());
 
-        partialUpdatedUtilityProvider.name(UPDATED_NAME).iban(UPDATED_IBAN).usreou(UPDATED_USREOU);
+        partialUpdatedUtilityProvider.name(UPDATED_NAME).iban(UPDATED_IBAN).usreou(UPDATED_USREOU).rate(UPDATED_RATE);
 
         restUtilityProviderMockMvc
             .perform(
@@ -402,6 +440,7 @@ class UtilityProviderResourceIT {
         assertThat(testUtilityProvider.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testUtilityProvider.getIban()).isEqualTo(UPDATED_IBAN);
         assertThat(testUtilityProvider.getUsreou()).isEqualTo(UPDATED_USREOU);
+        assertThat(testUtilityProvider.getRate()).isEqualByComparingTo(UPDATED_RATE);
     }
 
     @Test

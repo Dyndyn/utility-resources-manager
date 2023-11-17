@@ -38,6 +38,19 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" jhiTranslate="utilityResourcesManagerApp.utilityProvider.rate" for="field_rate">Rate</label>
+          <input type="number" class="form-control" name="rate" id="field_rate" data-cy="rate" formControlName="rate" />
+          <div *ngIf="editForm.get('rate')!.invalid && (editForm.get('rate')!.dirty || editForm.get('rate')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('rate')?.errors?.required" jhiTranslate="entity.validation.required"
+              >This field is required.</small
+            >
+            <small class="form-text text-danger" [hidden]="!editForm.get('rate')?.errors?.number" jhiTranslate="entity.validation.number"
+              >This field should be a number.</small
+            >
+          </div>
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" jhiTranslate="utilityResourcesManagerApp.utilityProvider.utility" for="field_utility">Utility</label>
           <select
             class="form-control"

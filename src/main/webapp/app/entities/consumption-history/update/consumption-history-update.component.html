@@ -46,6 +46,11 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" jhiTranslate="utilityResourcesManagerApp.consumptionHistory.cost" for="field_cost">Cost</label>
+          <input type="number" class="form-control" name="cost" id="field_cost" data-cy="cost" formControlName="cost" />
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" jhiTranslate="utilityResourcesManagerApp.consumptionHistory.date" for="field_date">Date</label>
           <div class="input-group">
             <input
@@ -59,6 +64,11 @@
               formControlName="date"
             />
             <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+          <div *ngIf="editForm.get('date')!.invalid && (editForm.get('date')!.dirty || editForm.get('date')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('date')?.errors?.required" jhiTranslate="entity.validation.required"
+              >This field is required.</small
+            >
           </div>
         </div>
 
@@ -79,7 +89,7 @@
           >
             <option *ngIf="editForm.get(['householdUtility'])!.value == null" [ngValue]="null" selected></option>
             <option [ngValue]="householdUtilityOption" *ngFor="let householdUtilityOption of householdUtilitiesSharedCollection">
-              {{ householdUtilityOption.id }}
+              {{ householdUtilityOption.name }}
             </option>
           </select>
         </div>

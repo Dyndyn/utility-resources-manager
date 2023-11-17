@@ -21,6 +21,7 @@ type UtilityProviderFormGroupContent = {
   name: FormControl<IUtilityProvider['name']>;
   iban: FormControl<IUtilityProvider['iban']>;
   usreou: FormControl<IUtilityProvider['usreou']>;
+  rate: FormControl<IUtilityProvider['rate']>;
   utility: FormControl<IUtilityProvider['utility']>;
 };
 
@@ -46,6 +47,9 @@ export class UtilityProviderFormService {
       }),
       iban: new FormControl(utilityProviderRawValue.iban),
       usreou: new FormControl(utilityProviderRawValue.usreou),
+      rate: new FormControl(utilityProviderRawValue.rate, {
+        validators: [Validators.required],
+      }),
       utility: new FormControl(utilityProviderRawValue.utility, {
         validators: [Validators.required],
       }),

@@ -29,7 +29,11 @@ public class ConsumptionHistory implements Serializable {
     @Column(name = "consumption", precision = 21, scale = 2, nullable = false)
     private BigDecimal consumption;
 
-    @Column(name = "date")
+    @Column(name = "cost", precision = 21, scale = 2)
+    private BigDecimal cost;
+
+    @NotNull
+    @Column(name = "date", nullable = false)
     private LocalDate date;
 
     @ManyToOne(optional = false)
@@ -63,6 +67,19 @@ public class ConsumptionHistory implements Serializable {
 
     public void setConsumption(BigDecimal consumption) {
         this.consumption = consumption;
+    }
+
+    public BigDecimal getCost() {
+        return this.cost;
+    }
+
+    public ConsumptionHistory cost(BigDecimal cost) {
+        this.setCost(cost);
+        return this;
+    }
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
     }
 
     public LocalDate getDate() {
@@ -116,6 +133,7 @@ public class ConsumptionHistory implements Serializable {
         return "ConsumptionHistory{" +
             "id=" + getId() +
             ", consumption=" + getConsumption() +
+            ", cost=" + getCost() +
             ", date='" + getDate() + "'" +
             "}";
     }

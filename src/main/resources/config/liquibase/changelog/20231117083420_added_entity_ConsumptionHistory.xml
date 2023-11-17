@@ -17,8 +17,11 @@
             <column name="consumption" type="decimal(21,2)">
                 <constraints nullable="false" />
             </column>
-            <column name="date" type="date">
+            <column name="cost" type="decimal(21,2)">
                 <constraints nullable="true" />
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false" />
             </column>
             <column name="household_utility_id" type="bigint">
                 <constraints nullable="false" />
@@ -45,6 +48,7 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="consumption" type="numeric"/>
+            <column name="cost" type="numeric"/>
             <column name="date" type="date"/>
             <column name="household_utility_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->

@@ -17,6 +17,9 @@ public class ConsumptionHistoryDTO implements Serializable {
     @NotNull
     private BigDecimal consumption;
 
+    private BigDecimal cost;
+
+    @NotNull
     private LocalDate date;
 
     private HouseholdUtilityDTO householdUtility;
@@ -35,6 +38,14 @@ public class ConsumptionHistoryDTO implements Serializable {
 
     public void setConsumption(BigDecimal consumption) {
         this.consumption = consumption;
+    }
+
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
     }
 
     public LocalDate getDate() {
@@ -80,6 +91,7 @@ public class ConsumptionHistoryDTO implements Serializable {
         return "ConsumptionHistoryDTO{" +
             "id=" + getId() +
             ", consumption=" + getConsumption() +
+            ", cost=" + getCost() +
             ", date='" + getDate() + "'" +
             ", householdUtility=" + getHouseholdUtility() +
             "}";

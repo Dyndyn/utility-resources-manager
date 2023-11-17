@@ -19,6 +19,7 @@ type ConsumptionHistoryFormDefaults = Pick<NewConsumptionHistory, 'id'>;
 type ConsumptionHistoryFormGroupContent = {
   id: FormControl<IConsumptionHistory['id'] | NewConsumptionHistory['id']>;
   consumption: FormControl<IConsumptionHistory['consumption']>;
+  cost: FormControl<IConsumptionHistory['cost']>;
   date: FormControl<IConsumptionHistory['date']>;
   householdUtility: FormControl<IConsumptionHistory['householdUtility']>;
 };
@@ -43,7 +44,10 @@ export class ConsumptionHistoryFormService {
       consumption: new FormControl(consumptionHistoryRawValue.consumption, {
         validators: [Validators.required],
       }),
-      date: new FormControl(consumptionHistoryRawValue.date),
+      cost: new FormControl(consumptionHistoryRawValue.cost),
+      date: new FormControl(consumptionHistoryRawValue.date, {
+        validators: [Validators.required],
+      }),
       householdUtility: new FormControl(consumptionHistoryRawValue.householdUtility, {
         validators: [Validators.required],
       }),

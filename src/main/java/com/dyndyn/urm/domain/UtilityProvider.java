@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
@@ -34,6 +35,10 @@ public class UtilityProvider implements Serializable {
 
     @Column(name = "usreou")
     private String usreou;
+
+    @NotNull
+    @Column(name = "rate", precision = 21, scale = 2, nullable = false)
+    private BigDecimal rate;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "utilityProvider")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -97,6 +102,19 @@ public class UtilityProvider implements Serializable {
 
     public void setUsreou(String usreou) {
         this.usreou = usreou;
+    }
+
+    public BigDecimal getRate() {
+        return this.rate;
+    }
+
+    public UtilityProvider rate(BigDecimal rate) {
+        this.setRate(rate);
+        return this;
+    }
+
+    public void setRate(BigDecimal rate) {
+        this.rate = rate;
     }
 
     public Set<HouseholdUtility> getHouseholdUtilities() {
@@ -170,6 +188,7 @@ public class UtilityProvider implements Serializable {
             ", name='" + getName() + "'" +
             ", iban='" + getIban() + "'" +
             ", usreou='" + getUsreou() + "'" +
+            ", rate=" + getRate() +
             "}";
     }
 }

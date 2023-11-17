@@ -2,6 +2,7 @@ package com.dyndyn.urm.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -18,6 +19,9 @@ public class UtilityProviderDTO implements Serializable {
     private String iban;
 
     private String usreou;
+
+    @NotNull
+    private BigDecimal rate;
 
     private UtilityDTO utility;
 
@@ -51,6 +55,14 @@ public class UtilityProviderDTO implements Serializable {
 
     public void setUsreou(String usreou) {
         this.usreou = usreou;
+    }
+
+    public BigDecimal getRate() {
+        return rate;
+    }
+
+    public void setRate(BigDecimal rate) {
+        this.rate = rate;
     }
 
     public UtilityDTO getUtility() {
@@ -90,6 +102,7 @@ public class UtilityProviderDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", iban='" + getIban() + "'" +
             ", usreou='" + getUsreou() + "'" +
+            ", rate=" + getRate() +
             ", utility=" + getUtility() +
             "}";
     }

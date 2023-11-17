@@ -23,6 +23,7 @@ describe('UtilityProvider Form Service', () => {
             name: expect.any(Object),
             iban: expect.any(Object),
             usreou: expect.any(Object),
+            rate: expect.any(Object),
             utility: expect.any(Object),
           }),
         );
@@ -37,6 +38,7 @@ describe('UtilityProvider Form Service', () => {
             name: expect.any(Object),
             iban: expect.any(Object),
             usreou: expect.any(Object),
+            rate: expect.any(Object),
             utility: expect.any(Object),
           }),
         );

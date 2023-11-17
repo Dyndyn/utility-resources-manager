@@ -3,6 +3,7 @@ package com.dyndyn.urm.web.rest;
 import static com.dyndyn.urm.web.rest.TestUtil.sameNumber;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -10,19 +11,26 @@ import com.dyndyn.urm.IntegrationTest;
 import com.dyndyn.urm.domain.ConsumptionHistory;
 import com.dyndyn.urm.domain.HouseholdUtility;
 import com.dyndyn.urm.repository.ConsumptionHistoryRepository;
+import com.dyndyn.urm.service.ConsumptionHistoryService;
 import com.dyndyn.urm.service.dto.ConsumptionHistoryDTO;
 import com.dyndyn.urm.service.mapper.ConsumptionHistoryMapper;
 import jakarta.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,12 +40,16 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link ConsumptionHistoryResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class ConsumptionHistoryResourceIT {
 
     private static final BigDecimal DEFAULT_CONSUMPTION = new BigDecimal(1);
     private static final BigDecimal UPDATED_CONSUMPTION = new BigDecimal(2);
+
+    private static final BigDecimal DEFAULT_COST = new BigDecimal(1);
+    private static final BigDecimal UPDATED_COST = new BigDecimal(2);
 
     private static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_DATE = LocalDate.now(ZoneId.systemDefault());
@@ -51,8 +63,14 @@ class ConsumptionHistoryResourceIT {
     @Autowired
     private ConsumptionHistoryRepository consumptionHistoryRepository;
 
+    @Mock
+    private ConsumptionHistoryRepository consumptionHistoryRepositoryMock;
+
     @Autowired
     private ConsumptionHistoryMapper consumptionHistoryMapper;
+
+    @Mock
+    private ConsumptionHistoryService consumptionHistoryServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -69,7 +87,10 @@ class ConsumptionHistoryResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ConsumptionHistory createEntity(EntityManager em) {
-        ConsumptionHistory consumptionHistory = new ConsumptionHistory().consumption(DEFAULT_CONSUMPTION).date(DEFAULT_DATE);
+        ConsumptionHistory consumptionHistory = new ConsumptionHistory()
+            .consumption(DEFAULT_CONSUMPTION)
+            .cost(DEFAULT_COST)
+            .date(DEFAULT_DATE);
         // Add required entity
         HouseholdUtility householdUtility;
         if (TestUtil.findAll(em, HouseholdUtility.class).isEmpty()) {
@@ -90,7 +111,10 @@ class ConsumptionHistoryResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ConsumptionHistory createUpdatedEntity(EntityManager em) {
-        ConsumptionHistory consumptionHistory = new ConsumptionHistory().consumption(UPDATED_CONSUMPTION).date(UPDATED_DATE);
+        ConsumptionHistory consumptionHistory = new ConsumptionHistory()
+            .consumption(UPDATED_CONSUMPTION)
+            .cost(UPDATED_COST)
+            .date(UPDATED_DATE);
         // Add required entity
         HouseholdUtility householdUtility;
         if (TestUtil.findAll(em, HouseholdUtility.class).isEmpty()) {
@@ -128,6 +152,7 @@ class ConsumptionHistoryResourceIT {
         assertThat(consumptionHistoryList).hasSize(databaseSizeBeforeCreate + 1);
         ConsumptionHistory testConsumptionHistory = consumptionHistoryList.get(consumptionHistoryList.size() - 1);
         assertThat(testConsumptionHistory.getConsumption()).isEqualByComparingTo(DEFAULT_CONSUMPTION);
+        assertThat(testConsumptionHistory.getCost()).isEqualByComparingTo(DEFAULT_COST);
         assertThat(testConsumptionHistory.getDate()).isEqualTo(DEFAULT_DATE);
     }
 
@@ -178,6 +203,28 @@ class ConsumptionHistoryResourceIT {
 
     @Test
     @Transactional
+    void checkDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = consumptionHistoryRepository.findAll().size();
+        // set the field null
+        consumptionHistory.setDate(null);
+
+        // Create the ConsumptionHistory, which fails.
+        ConsumptionHistoryDTO consumptionHistoryDTO = consumptionHistoryMapper.toDto(consumptionHistory);
+
+        restConsumptionHistoryMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(consumptionHistoryDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ConsumptionHistory> consumptionHistoryList = consumptionHistoryRepository.findAll();
+        assertThat(consumptionHistoryList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllConsumptionHistories() throws Exception {
         // Initialize the database
         consumptionHistoryRepository.saveAndFlush(consumptionHistory);
@@ -189,7 +236,25 @@ class ConsumptionHistoryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(consumptionHistory.getId().intValue())))
             .andExpect(jsonPath("$.[*].consumption").value(hasItem(sameNumber(DEFAULT_CONSUMPTION))))
+            .andExpect(jsonPath("$.[*].cost").value(hasItem(sameNumber(DEFAULT_COST))))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllConsumptionHistoriesWithEagerRelationshipsIsEnabled() throws Exception {
+        when(consumptionHistoryServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restConsumptionHistoryMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(consumptionHistoryServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllConsumptionHistoriesWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(consumptionHistoryServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restConsumptionHistoryMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(consumptionHistoryRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test
@@ -205,6 +270,7 @@ class ConsumptionHistoryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(consumptionHistory.getId().intValue()))
             .andExpect(jsonPath("$.consumption").value(sameNumber(DEFAULT_CONSUMPTION)))
+            .andExpect(jsonPath("$.cost").value(sameNumber(DEFAULT_COST)))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
 
@@ -227,7 +293,7 @@ class ConsumptionHistoryResourceIT {
         ConsumptionHistory updatedConsumptionHistory = consumptionHistoryRepository.findById(consumptionHistory.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedConsumptionHistory are not directly saved in db
         em.detach(updatedConsumptionHistory);
-        updatedConsumptionHistory.consumption(UPDATED_CONSUMPTION).date(UPDATED_DATE);
+        updatedConsumptionHistory.consumption(UPDATED_CONSUMPTION).cost(UPDATED_COST).date(UPDATED_DATE);
         ConsumptionHistoryDTO consumptionHistoryDTO = consumptionHistoryMapper.toDto(updatedConsumptionHistory);
 
         restConsumptionHistoryMockMvc
@@ -243,6 +309,7 @@ class ConsumptionHistoryResourceIT {
         assertThat(consumptionHistoryList).hasSize(databaseSizeBeforeUpdate);
         ConsumptionHistory testConsumptionHistory = consumptionHistoryList.get(consumptionHistoryList.size() - 1);
         assertThat(testConsumptionHistory.getConsumption()).isEqualByComparingTo(UPDATED_CONSUMPTION);
+        assertThat(testConsumptionHistory.getCost()).isEqualByComparingTo(UPDATED_COST);
         assertThat(testConsumptionHistory.getDate()).isEqualTo(UPDATED_DATE);
     }
 
@@ -327,7 +394,7 @@ class ConsumptionHistoryResourceIT {
         ConsumptionHistory partialUpdatedConsumptionHistory = new ConsumptionHistory();
         partialUpdatedConsumptionHistory.setId(consumptionHistory.getId());
 
-        partialUpdatedConsumptionHistory.date(UPDATED_DATE);
+        partialUpdatedConsumptionHistory.consumption(UPDATED_CONSUMPTION).cost(UPDATED_COST).date(UPDATED_DATE);
 
         restConsumptionHistoryMockMvc
             .perform(
@@ -341,7 +408,8 @@ class ConsumptionHistoryResourceIT {
         List<ConsumptionHistory> consumptionHistoryList = consumptionHistoryRepository.findAll();
         assertThat(consumptionHistoryList).hasSize(databaseSizeBeforeUpdate);
         ConsumptionHistory testConsumptionHistory = consumptionHistoryList.get(consumptionHistoryList.size() - 1);
-        assertThat(testConsumptionHistory.getConsumption()).isEqualByComparingTo(DEFAULT_CONSUMPTION);
+        assertThat(testConsumptionHistory.getConsumption()).isEqualByComparingTo(UPDATED_CONSUMPTION);
+        assertThat(testConsumptionHistory.getCost()).isEqualByComparingTo(UPDATED_COST);
         assertThat(testConsumptionHistory.getDate()).isEqualTo(UPDATED_DATE);
     }
 
@@ -357,7 +425,7 @@ class ConsumptionHistoryResourceIT {
         ConsumptionHistory partialUpdatedConsumptionHistory = new ConsumptionHistory();
         partialUpdatedConsumptionHistory.setId(consumptionHistory.getId());
 
-        partialUpdatedConsumptionHistory.consumption(UPDATED_CONSUMPTION).date(UPDATED_DATE);
+        partialUpdatedConsumptionHistory.consumption(UPDATED_CONSUMPTION).cost(UPDATED_COST).date(UPDATED_DATE);
 
         restConsumptionHistoryMockMvc
             .perform(
@@ -372,6 +440,7 @@ class ConsumptionHistoryResourceIT {
         assertThat(consumptionHistoryList).hasSize(databaseSizeBeforeUpdate);
         ConsumptionHistory testConsumptionHistory = consumptionHistoryList.get(consumptionHistoryList.size() - 1);
         assertThat(testConsumptionHistory.getConsumption()).isEqualByComparingTo(UPDATED_CONSUMPTION);
+        assertThat(testConsumptionHistory.getCost()).isEqualByComparingTo(UPDATED_COST);
         assertThat(testConsumptionHistory.getDate()).isEqualTo(UPDATED_DATE);
     }
 

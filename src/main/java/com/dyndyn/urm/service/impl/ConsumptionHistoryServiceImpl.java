@@ -72,11 +72,15 @@ public class ConsumptionHistoryServiceImpl implements ConsumptionHistoryService 
         return consumptionHistoryRepository.findAll(pageable).map(consumptionHistoryMapper::toDto);
     }
 
+    public Page<ConsumptionHistoryDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return consumptionHistoryRepository.findAllWithEagerRelationships(pageable).map(consumptionHistoryMapper::toDto);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Optional<ConsumptionHistoryDTO> findOne(Long id) {
         log.debug("Request to get ConsumptionHistory : {}", id);
-        return consumptionHistoryRepository.findById(id).map(consumptionHistoryMapper::toDto);
+        return consumptionHistoryRepository.findOneWithEagerRelationships(id).map(consumptionHistoryMapper::toDto);
     }
 
     @Override

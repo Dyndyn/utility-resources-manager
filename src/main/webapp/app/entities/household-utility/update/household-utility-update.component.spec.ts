@@ -76,10 +76,10 @@ describe('HouseholdUtility Management Update Component', () => {
 
     it('Should call UtilityProvider query and add missing value', () => {
       const householdUtility: IHouseholdUtility = { id: 456 };
-      const utilityProvider: IUtilityProvider = { id: 11846 };
+      const utilityProvider: IUtilityProvider = { id: 4168 };
       householdUtility.utilityProvider = utilityProvider;
 
-      const utilityProviderCollection: IUtilityProvider[] = [{ id: 10843 }];
+      const utilityProviderCollection: IUtilityProvider[] = [{ id: 2767 }];
       jest.spyOn(utilityProviderService, 'query').mockReturnValue(of(new HttpResponse({ body: utilityProviderCollection })));
       const additionalUtilityProviders = [utilityProvider];
       const expectedCollection: IUtilityProvider[] = [...additionalUtilityProviders, ...utilityProviderCollection];
@@ -100,7 +100,7 @@ describe('HouseholdUtility Management Update Component', () => {
       const householdUtility: IHouseholdUtility = { id: 456 };
       const household: IHousehold = { id: 13475 };
       householdUtility.household = household;
-      const utilityProvider: IUtilityProvider = { id: 12922 };
+      const utilityProvider: IUtilityProvider = { id: 23889 };
       householdUtility.utilityProvider = utilityProvider;
 
       activatedRoute.data = of({ householdUtility });
