@@ -7,4 +7,4 @@ id;name;constant;predictable
 6;Охорона;true;false
 7;Вивіз сміття;true;false
 8;Домофон;true;false
-9;Квартплата;false;false
+9;Квартплата;true;false

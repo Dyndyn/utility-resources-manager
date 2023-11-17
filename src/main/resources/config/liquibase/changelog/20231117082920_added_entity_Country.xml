@@ -33,7 +33,7 @@
     -->
     <changeSet id="20231117082920-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/fake-data/country.csv"
+                  file="config/liquibase/data/country.csv"
                   separator=";"
                   tableName="country"
                   usePreparedStatements="true">
