@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="utility">
+      <h2 data-cy="utilityDetailsHeading"><span jhiTranslate="utilityResourcesManagerApp.utility.detail.title">Utility</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ utility.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="utilityResourcesManagerApp.utility.name">Name</span></dt>
+        <dd>
+          <span>{{ utility.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="utilityResourcesManagerApp.utility.constant">Constant</span></dt>
+        <dd>
+          <span>{{ utility.constant }}</span>
+        </dd>
+        <dt><span jhiTranslate="utilityResourcesManagerApp.utility.predictable">Predictable</span></dt>
+        <dd>
+          <span>{{ utility.predictable }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/utility', utility.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

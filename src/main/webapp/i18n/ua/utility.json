@@ -1,0 +1,27 @@
+{
+  "utilityResourcesManagerApp": {
+    "utility": {
+      "home": {
+        "title": "Utilities",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Створити новий Utility",
+        "createOrEditLabel": "Створити чи редагувати Utility",
+        "notFound": "No Utilities found"
+      },
+      "created": "Новий Utility створений з ідентифікатором {{ param }}",
+      "updated": "Utility оновлений з ідентифікатором {{ param }}",
+      "deleted": "Utility видалений з ідентифікатором {{ param }}",
+      "delete": {
+        "question": "Ви впевнені, що хочете видалити Utility {{ id }}?"
+      },
+      "detail": {
+        "title": "Utility"
+      },
+      "id": "ID",
+      "name": "Name",
+      "constant": "Constant",
+      "predictable": "Predictable",
+      "utilityProvider": "Utility Provider"
+    }
+  }
+}

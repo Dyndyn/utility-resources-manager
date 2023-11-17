@@ -1,0 +1,10 @@
+id;name;constant;predictable
+1;Електропостачання;false;true
+2;Газ;false;true
+3;Доставка газу;true;false
+4;Вода;false;false
+5;Інтернет;true;false
+6;Охорона;true;false
+7;Вивіз сміття;true;false
+8;Домофон;true;false
+9;Квартплата;false;false

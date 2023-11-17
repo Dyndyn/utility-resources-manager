@@ -1,0 +1,124 @@
+<div>
+  <h2 id="page-heading" data-cy="ConsumptionHistoryHeading">
+    <span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.home.title">Consumption Histories</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-consumption-history"
+        [routerLink]="['/consumption-history/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.home.createLabel">Create a new Consumption History</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="consumptionHistories?.length === 0">
+    <span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.home.notFound">No Consumption Histories found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="consumptionHistories && consumptionHistories.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="consumption">
+            <div class="d-flex">
+              <span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.consumption">Consumption</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="date">
+            <div class="d-flex">
+              <span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.date">Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="householdUtility.id">
+            <div class="d-flex">
+              <span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.householdUtility">Household Utility</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let consumptionHistory of consumptionHistories; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/consumption-history', consumptionHistory.id, 'view']">{{ consumptionHistory.id }}</a>
+          </td>
+          <td>{{ consumptionHistory.consumption }}</td>
+          <td>{{ consumptionHistory.date | formatMediumDate }}</td>
+          <td>
+            <div *ngIf="consumptionHistory.householdUtility">
+              <a [routerLink]="['/household-utility', consumptionHistory.householdUtility.id, 'view']">{{
+                consumptionHistory.householdUtility.id
+              }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <a
+                [routerLink]="['/consumption-history', consumptionHistory.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </a>
+
+              <a
+                [routerLink]="['/consumption-history', consumptionHistory.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </a>
+
+              <button type="submit" (click)="delete(consumptionHistory)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="consumptionHistories && consumptionHistories.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

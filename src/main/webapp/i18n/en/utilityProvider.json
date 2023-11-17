@@ -1,0 +1,28 @@
+{
+  "utilityResourcesManagerApp": {
+    "utilityProvider": {
+      "home": {
+        "title": "Utility Providers",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Utility Provider",
+        "createOrEditLabel": "Create or edit a Utility Provider",
+        "notFound": "No Utility Providers found"
+      },
+      "created": "A new Utility Provider is created with identifier {{ param }}",
+      "updated": "A Utility Provider is updated with identifier {{ param }}",
+      "deleted": "A Utility Provider is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Utility Provider {{ id }}?"
+      },
+      "detail": {
+        "title": "Utility Provider"
+      },
+      "id": "ID",
+      "name": "Name",
+      "iban": "Iban",
+      "usreou": "Usreou",
+      "householdUtility": "Household Utility",
+      "utility": "Utility"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "applications": "*",
+  "changelogDate": "20231117083020",
+  "dto": "mapstruct",
+  "entityTableName": "utility",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "constant",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "predictable",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Utility",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "utilityProvider",
+      "otherEntityRelationshipName": "utility",
+      "relationshipName": "utilityProvider",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

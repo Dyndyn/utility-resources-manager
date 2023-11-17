@@ -1,0 +1,29 @@
+{
+  "utilityResourcesManagerApp": {
+    "householdUtility": {
+      "home": {
+        "title": "Household Utilities",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Household Utility",
+        "createOrEditLabel": "Create or edit a Household Utility",
+        "notFound": "No Household Utilities found"
+      },
+      "created": "A new Household Utility is created with identifier {{ param }}",
+      "updated": "A Household Utility is updated with identifier {{ param }}",
+      "deleted": "A Household Utility is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Household Utility {{ id }}?"
+      },
+      "detail": {
+        "title": "Household Utility"
+      },
+      "id": "ID",
+      "name": "Name",
+      "accountId": "Account Id",
+      "active": "Active",
+      "consumptionHistory": "Consumption History",
+      "household": "Household",
+      "utilityProvider": "Utility Provider"
+    }
+  }
+}

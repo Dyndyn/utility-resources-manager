@@ -1,0 +1,29 @@
+{
+  "utilityResourcesManagerApp": {
+    "householdUtility": {
+      "home": {
+        "title": "HouseholdUtilities",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Household Utility",
+        "createOrEditLabel": "Créer ou éditer un Household Utility",
+        "notFound": "Aucun Household Utility trouvé"
+      },
+      "created": "Un nouveau Household Utility a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Household Utility avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Household Utility avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Household Utility {{ id }} ?"
+      },
+      "detail": {
+        "title": "Household Utility"
+      },
+      "id": "ID",
+      "name": "Name",
+      "accountId": "Account Id",
+      "active": "Active",
+      "consumptionHistory": "Consumption History",
+      "household": "Household",
+      "utilityProvider": "Utility Provider"
+    }
+  }
+}

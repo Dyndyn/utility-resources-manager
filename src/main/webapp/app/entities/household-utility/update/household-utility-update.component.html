@@ -1,0 +1,132 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-household-utility-heading"
+        data-cy="HouseholdUtilityCreateUpdateHeading"
+        jhiTranslate="utilityResourcesManagerApp.householdUtility.home.createOrEditLabel"
+      >
+        Create or edit a Household Utility
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="utilityResourcesManagerApp.householdUtility.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required"
+              >This field is required.</small
+            >
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="utilityResourcesManagerApp.householdUtility.accountId" for="field_accountId"
+            >Account Id</label
+          >
+          <input type="text" class="form-control" name="accountId" id="field_accountId" data-cy="accountId" formControlName="accountId" />
+          <div *ngIf="editForm.get('accountId')!.invalid && (editForm.get('accountId')!.dirty || editForm.get('accountId')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('accountId')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+              >This field is required.</small
+            >
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="utilityResourcesManagerApp.householdUtility.active" for="field_active">Active</label>
+          <input type="checkbox" class="form-check" name="active" id="field_active" data-cy="active" formControlName="active" />
+          <div *ngIf="editForm.get('active')!.invalid && (editForm.get('active')!.dirty || editForm.get('active')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('active')?.errors?.required" jhiTranslate="entity.validation.required"
+              >This field is required.</small
+            >
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="utilityResourcesManagerApp.householdUtility.household" for="field_household"
+            >Household</label
+          >
+          <select
+            class="form-control"
+            id="field_household"
+            data-cy="household"
+            name="household"
+            formControlName="household"
+            [compareWith]="compareHousehold"
+          >
+            <option *ngIf="editForm.get(['household'])!.value == null" [ngValue]="null" selected></option>
+            <option [ngValue]="householdOption" *ngFor="let householdOption of householdsSharedCollection">
+              {{ householdOption.address }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['household'])!.invalid && (editForm.get(['household'])!.dirty || editForm.get(['household'])!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['household'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+            >This field is required.</small
+          >
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="utilityResourcesManagerApp.householdUtility.utilityProvider" for="field_utilityProvider"
+            >Utility Provider</label
+          >
+          <select
+            class="form-control"
+            id="field_utilityProvider"
+            data-cy="utilityProvider"
+            name="utilityProvider"
+            formControlName="utilityProvider"
+            [compareWith]="compareUtilityProvider"
+          >
+            <option *ngIf="editForm.get(['utilityProvider'])!.value == null" [ngValue]="null" selected></option>
+            <option [ngValue]="utilityProviderOption" *ngFor="let utilityProviderOption of utilityProvidersSharedCollection">
+              {{ utilityProviderOption.name }}
+            </option>
+          </select>
+        </div>
+        <div
+          *ngIf="
+            editForm.get(['utilityProvider'])!.invalid &&
+            (editForm.get(['utilityProvider'])!.dirty || editForm.get(['utilityProvider'])!.touched)
+          "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['utilityProvider'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+            >This field is required.</small
+          >
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

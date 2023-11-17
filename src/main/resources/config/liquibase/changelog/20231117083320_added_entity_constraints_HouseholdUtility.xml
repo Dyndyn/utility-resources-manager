@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity HouseholdUtility.
+    -->
+    <changeSet id="20231117083320-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="household_id"
+                                 baseTableName="household_utility"
+                                 constraintName="fk_household_utility__household_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="household"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="utility_provider_id"
+                                 baseTableName="household_utility"
+                                 constraintName="fk_household_utility__utility_provider_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="utility_provider"
+                                 />
+    </changeSet>
+</databaseChangeLog>

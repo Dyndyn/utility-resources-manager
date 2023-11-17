@@ -1,0 +1,30 @@
+{
+  "applications": "*",
+  "changelogDate": "20231117083420",
+  "dto": "mapstruct",
+  "entityTableName": "consumption_history",
+  "fields": [
+    {
+      "fieldName": "consumption",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "name": "ConsumptionHistory",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "householdUtility",
+      "relationshipName": "householdUtility",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

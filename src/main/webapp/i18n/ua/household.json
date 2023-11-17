@@ -1,0 +1,29 @@
+{
+  "utilityResourcesManagerApp": {
+    "household": {
+      "home": {
+        "title": "Households",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Створити новий Household",
+        "createOrEditLabel": "Створити чи редагувати Household",
+        "notFound": "No Households found"
+      },
+      "created": "Новий Household створений з ідентифікатором {{ param }}",
+      "updated": "Household оновлений з ідентифікатором {{ param }}",
+      "deleted": "Household видалений з ідентифікатором {{ param }}",
+      "delete": {
+        "question": "Ви впевнені, що хочете видалити Household {{ id }}?"
+      },
+      "detail": {
+        "title": "Household"
+      },
+      "id": "ID",
+      "address": "Address",
+      "area": "Area",
+      "residents": "Residents",
+      "householdUtility": "Household Utility",
+      "user": "User",
+      "city": "City"
+    }
+  }
+}

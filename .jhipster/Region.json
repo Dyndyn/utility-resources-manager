@@ -1,0 +1,34 @@
+{
+  "applications": "*",
+  "changelogDate": "20231117082820",
+  "dto": "mapstruct",
+  "entityTableName": "region",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Region",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "city",
+      "otherEntityRelationshipName": "region",
+      "relationshipName": "city",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "country",
+      "relationshipName": "country",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

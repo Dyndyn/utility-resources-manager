@@ -1,0 +1,26 @@
+{
+  "utilityResourcesManagerApp": {
+    "consumptionHistory": {
+      "home": {
+        "title": "ConsumptionHistories",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Consumption History",
+        "createOrEditLabel": "Créer ou éditer un Consumption History",
+        "notFound": "Aucun Consumption History trouvé"
+      },
+      "created": "Un nouveau Consumption History a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Consumption History avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Consumption History avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Consumption History {{ id }} ?"
+      },
+      "detail": {
+        "title": "Consumption History"
+      },
+      "id": "ID",
+      "consumption": "Consumption",
+      "date": "Date",
+      "householdUtility": "Household Utility"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 package com.dyndyn.urm.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import com.dyndyn.urm.IntegrationTest;
 import com.dyndyn.urm.domain.User;

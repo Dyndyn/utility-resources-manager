@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="utilityProvider">
+      <h2 data-cy="utilityProviderDetailsHeading">
+        <span jhiTranslate="utilityResourcesManagerApp.utilityProvider.detail.title">Utility Provider</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ utilityProvider.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="utilityResourcesManagerApp.utilityProvider.name">Name</span></dt>
+        <dd>
+          <span>{{ utilityProvider.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="utilityResourcesManagerApp.utilityProvider.iban">Iban</span></dt>
+        <dd>
+          <span>{{ utilityProvider.iban }}</span>
+        </dd>
+        <dt><span jhiTranslate="utilityResourcesManagerApp.utilityProvider.usreou">Usreou</span></dt>
+        <dd>
+          <span>{{ utilityProvider.usreou }}</span>
+        </dd>
+        <dt><span jhiTranslate="utilityResourcesManagerApp.utilityProvider.utility">Utility</span></dt>
+        <dd>
+          <div *ngIf="utilityProvider.utility">
+            <a [routerLink]="['/utility', utilityProvider.utility.id, 'view']">{{ utilityProvider.utility.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/utility-provider', utilityProvider.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,108 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-household-heading"
+        data-cy="HouseholdCreateUpdateHeading"
+        jhiTranslate="utilityResourcesManagerApp.household.home.createOrEditLabel"
+      >
+        Create or edit a Household
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="utilityResourcesManagerApp.household.address" for="field_address">Address</label>
+          <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
+          <div *ngIf="editForm.get('address')!.invalid && (editForm.get('address')!.dirty || editForm.get('address')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('address')?.errors?.required" jhiTranslate="entity.validation.required"
+              >This field is required.</small
+            >
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="utilityResourcesManagerApp.household.area" for="field_area">Area</label>
+          <input type="number" class="form-control" name="area" id="field_area" data-cy="area" formControlName="area" />
+          <div *ngIf="editForm.get('area')!.invalid && (editForm.get('area')!.dirty || editForm.get('area')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('area')?.errors?.required" jhiTranslate="entity.validation.required"
+              >This field is required.</small
+            >
+            <small class="form-text text-danger" [hidden]="!editForm.get('area')?.errors?.number" jhiTranslate="entity.validation.number"
+              >This field should be a number.</small
+            >
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="utilityResourcesManagerApp.household.residents" for="field_residents">Residents</label>
+          <input type="number" class="form-control" name="residents" id="field_residents" data-cy="residents" formControlName="residents" />
+          <div *ngIf="editForm.get('residents')!.invalid && (editForm.get('residents')!.dirty || editForm.get('residents')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('residents')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+              >This field is required.</small
+            >
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('residents')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+              >This field should be a number.</small
+            >
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label jhiTranslate="utilityResourcesManagerApp.household.user" for="field_users">User</label>
+          <select
+            class="form-control"
+            id="field_users"
+            data-cy="user"
+            multiple
+            name="users"
+            formControlName="users"
+            [compareWith]="compareUser"
+          >
+            <option [ngValue]="userOption" *ngFor="let userOption of usersSharedCollection">{{ userOption.id }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="utilityResourcesManagerApp.household.city" for="field_city">City</label>
+          <select class="form-control" id="field_city" data-cy="city" name="city" formControlName="city" [compareWith]="compareCity">
+            <option *ngIf="editForm.get(['city'])!.value == null" [ngValue]="null" selected></option>
+            <option [ngValue]="cityOption" *ngFor="let cityOption of citiesSharedCollection">{{ cityOption.name }}</option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['city'])!.invalid && (editForm.get(['city'])!.dirty || editForm.get(['city'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['city'])?.errors?.required" jhiTranslate="entity.validation.required"
+            >This field is required.</small
+          >
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

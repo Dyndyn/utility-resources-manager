@@ -1,0 +1,52 @@
+{
+  "applications": "*",
+  "changelogDate": "20231117083320",
+  "dto": "mapstruct",
+  "entityTableName": "household_utility",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "accountId",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "active",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "HouseholdUtility",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "consumptionHistory",
+      "otherEntityRelationshipName": "householdUtility",
+      "relationshipName": "consumptionHistory",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityField": "address",
+      "otherEntityName": "household",
+      "relationshipName": "household",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "utilityProvider",
+      "relationshipName": "utilityProvider",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

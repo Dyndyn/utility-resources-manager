@@ -1,0 +1,42 @@
+{
+  "applications": "*",
+  "changelogDate": "20231117083120",
+  "dto": "mapstruct",
+  "entityTableName": "utility_provider",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "iban",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "usreou",
+      "fieldType": "String"
+    }
+  ],
+  "name": "UtilityProvider",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "householdUtility",
+      "otherEntityRelationshipName": "utilityProvider",
+      "relationshipName": "householdUtility",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "utility",
+      "relationshipName": "utility",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

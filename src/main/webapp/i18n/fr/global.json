@@ -7,7 +7,15 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entités",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "city": "City",
+        "region": "Region",
+        "country": "Country",
+        "utility": "Utility",
+        "utilityProvider": "Utility Provider",
+        "household": "Household",
+        "householdUtility": "Household Utility",
+        "consumptionHistory": "Consumption History"
       },
       "account": {
         "main": "Compte",

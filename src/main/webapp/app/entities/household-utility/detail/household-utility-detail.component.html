@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="householdUtility">
+      <h2 data-cy="householdUtilityDetailsHeading">
+        <span jhiTranslate="utilityResourcesManagerApp.householdUtility.detail.title">Household Utility</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ householdUtility.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="utilityResourcesManagerApp.householdUtility.name">Name</span></dt>
+        <dd>
+          <span>{{ householdUtility.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="utilityResourcesManagerApp.householdUtility.accountId">Account Id</span></dt>
+        <dd>
+          <span>{{ householdUtility.accountId }}</span>
+        </dd>
+        <dt><span jhiTranslate="utilityResourcesManagerApp.householdUtility.active">Active</span></dt>
+        <dd>
+          <span>{{ householdUtility.active }}</span>
+        </dd>
+        <dt><span jhiTranslate="utilityResourcesManagerApp.householdUtility.household">Household</span></dt>
+        <dd>
+          <div *ngIf="householdUtility.household">
+            <a [routerLink]="['/household', householdUtility.household.id, 'view']">{{ householdUtility.household.address }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="utilityResourcesManagerApp.householdUtility.utilityProvider">Utility Provider</span></dt>
+        <dd>
+          <div *ngIf="householdUtility.utilityProvider">
+            <a [routerLink]="['/utility-provider', householdUtility.utilityProvider.id, 'view']">{{
+              householdUtility.utilityProvider.name
+            }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/household-utility', householdUtility.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

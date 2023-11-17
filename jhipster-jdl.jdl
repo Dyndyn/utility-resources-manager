@@ -1,0 +1,68 @@
+entity City {
+	name String required
+}
+
+entity Region {
+	name String required
+}
+
+entity Country {
+	name String required
+}
+entity Utility {
+	name String required
+	constant Boolean required
+	predictable Boolean required
+}
+
+entity UtilityProvider {
+	name String required
+    iban String
+    usreou String
+}
+
+entity Household {
+	address String required
+    area BigDecimal required
+    residents Integer required
+}
+
+entity HouseholdUtility {
+	name String required
+	accountId String required
+	active Boolean required
+}
+
+entity ConsumptionHistory {
+	consumption BigDecimal required
+    date LocalDate
+}
+
+relationship OneToMany {
+	Country to Region{country(name) required}
+}
+
+relationship OneToMany {
+	Region to City{region(name) required}
+}
+
+relationship OneToMany {
+	Utility to UtilityProvider{utility(name) required}
+}
+
+relationship OneToMany {
+	City to Household{city(name) required}
+}
+
+relationship ManyToMany {
+	Household to User with builtInEntity
+}
+
+relationship OneToMany {
+	Household to HouseholdUtility{household(address) required}
+    UtilityProvider to HouseholdUtility{utilityProvider(name) required}
+    HouseholdUtility to ConsumptionHistory{householdUtility required}
+}
+
+use mapstruct, serviceImpl, pagination for all
+

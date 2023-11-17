@@ -1,0 +1,27 @@
+{
+  "utilityResourcesManagerApp": {
+    "utility": {
+      "home": {
+        "title": "Utilities",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Utility",
+        "createOrEditLabel": "Create or edit a Utility",
+        "notFound": "No Utilities found"
+      },
+      "created": "A new Utility is created with identifier {{ param }}",
+      "updated": "A Utility is updated with identifier {{ param }}",
+      "deleted": "A Utility is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Utility {{ id }}?"
+      },
+      "detail": {
+        "title": "Utility"
+      },
+      "id": "ID",
+      "name": "Name",
+      "constant": "Constant",
+      "predictable": "Predictable",
+      "utilityProvider": "Utility Provider"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "applications": "*",
+  "changelogDate": "20231117083220",
+  "dto": "mapstruct",
+  "entityTableName": "household",
+  "fields": [
+    {
+      "fieldName": "address",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "area",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "residents",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Household",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "householdUtility",
+      "otherEntityRelationshipName": "household",
+      "relationshipName": "householdUtility",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "household",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "city",
+      "relationshipName": "city",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

@@ -1,0 +1,26 @@
+{
+  "applications": "*",
+  "changelogDate": "20231117082920",
+  "dto": "mapstruct",
+  "entityTableName": "country",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Country",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "region",
+      "otherEntityRelationshipName": "country",
+      "relationshipName": "region",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

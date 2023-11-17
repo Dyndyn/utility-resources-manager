@@ -1,0 +1,29 @@
+{
+  "utilityResourcesManagerApp": {
+    "household": {
+      "home": {
+        "title": "Households",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Household",
+        "createOrEditLabel": "Create or edit a Household",
+        "notFound": "No Households found"
+      },
+      "created": "A new Household is created with identifier {{ param }}",
+      "updated": "A Household is updated with identifier {{ param }}",
+      "deleted": "A Household is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Household {{ id }}?"
+      },
+      "detail": {
+        "title": "Household"
+      },
+      "id": "ID",
+      "address": "Address",
+      "area": "Area",
+      "residents": "Residents",
+      "householdUtility": "Household Utility",
+      "user": "User",
+      "city": "City"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "utilityResourcesManagerApp": {
+    "householdUtility": {
+      "home": {
+        "title": "Household Utilities",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Створити новий Household Utility",
+        "createOrEditLabel": "Створити чи редагувати Household Utility",
+        "notFound": "No Household Utilities found"
+      },
+      "created": "Новий Household Utility створений з ідентифікатором {{ param }}",
+      "updated": "Household Utility оновлений з ідентифікатором {{ param }}",
+      "deleted": "Household Utility видалений з ідентифікатором {{ param }}",
+      "delete": {
+        "question": "Ви впевнені, що хочете видалити Household Utility {{ id }}?"
+      },
+      "detail": {
+        "title": "Household Utility"
+      },
+      "id": "ID",
+      "name": "Name",
+      "accountId": "Account Id",
+      "active": "Active",
+      "consumptionHistory": "Consumption History",
+      "household": "Household",
+      "utilityProvider": "Utility Provider"
+    }
+  }
+}

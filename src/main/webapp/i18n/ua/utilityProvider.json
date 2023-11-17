@@ -1,0 +1,28 @@
+{
+  "utilityResourcesManagerApp": {
+    "utilityProvider": {
+      "home": {
+        "title": "Utility Providers",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Створити новий Utility Provider",
+        "createOrEditLabel": "Створити чи редагувати Utility Provider",
+        "notFound": "No Utility Providers found"
+      },
+      "created": "Новий Utility Provider створений з ідентифікатором {{ param }}",
+      "updated": "Utility Provider оновлений з ідентифікатором {{ param }}",
+      "deleted": "Utility Provider видалений з ідентифікатором {{ param }}",
+      "delete": {
+        "question": "Ви впевнені, що хочете видалити Utility Provider {{ id }}?"
+      },
+      "detail": {
+        "title": "Utility Provider"
+      },
+      "id": "ID",
+      "name": "Name",
+      "iban": "Iban",
+      "usreou": "Usreou",
+      "householdUtility": "Household Utility",
+      "utility": "Utility"
+    }
+  }
+}
