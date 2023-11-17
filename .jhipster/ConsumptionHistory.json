@@ -19,6 +19,7 @@
       "fieldValidateRules": ["required"]
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "ConsumptionHistory",
   "pagination": "pagination",
   "relationships": [

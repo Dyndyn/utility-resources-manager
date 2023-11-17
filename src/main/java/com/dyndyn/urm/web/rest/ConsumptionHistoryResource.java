@@ -1,7 +1,9 @@
 package com.dyndyn.urm.web.rest;
 
 import com.dyndyn.urm.repository.ConsumptionHistoryRepository;
+import com.dyndyn.urm.service.ConsumptionHistoryQueryService;
 import com.dyndyn.urm.service.ConsumptionHistoryService;
+import com.dyndyn.urm.service.criteria.ConsumptionHistoryCriteria;
 import com.dyndyn.urm.service.dto.ConsumptionHistoryDTO;
 import com.dyndyn.urm.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -42,12 +44,16 @@ public class ConsumptionHistoryResource {
 
     private final ConsumptionHistoryRepository consumptionHistoryRepository;
 
+    private final ConsumptionHistoryQueryService consumptionHistoryQueryService;
+
     public ConsumptionHistoryResource(
         ConsumptionHistoryService consumptionHistoryService,
-        ConsumptionHistoryRepository consumptionHistoryRepository
+        ConsumptionHistoryRepository consumptionHistoryRepository,
+        ConsumptionHistoryQueryService consumptionHistoryQueryService
     ) {
         this.consumptionHistoryService = consumptionHistoryService;
         this.consumptionHistoryRepository = consumptionHistoryRepository;
+        this.consumptionHistoryQueryService = consumptionHistoryQueryService;
     }
 
     /**
@@ -145,23 +151,31 @@ public class ConsumptionHistoryResource {
      * {@code GET  /consumption-histories} : get all the consumptionHistories.
      *
      * @param pageable the pagination information.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of consumptionHistories in body.
      */
     @GetMapping("")
     public ResponseEntity<List<ConsumptionHistoryDTO>> getAllConsumptionHistories(
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
-        @RequestParam(required = false, defaultValue = "true") boolean eagerload
+        ConsumptionHistoryCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        log.debug("REST request to get a page of ConsumptionHistories");
-        Page<ConsumptionHistoryDTO> page;
-        if (eagerload) {
-            page = consumptionHistoryService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = consumptionHistoryService.findAll(pageable);
-        }
+        log.debug("REST request to get ConsumptionHistories by criteria: {}", criteria);
+
+        Page<ConsumptionHistoryDTO> page = consumptionHistoryQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /consumption-histories/count} : count all the consumptionHistories.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countConsumptionHistories(ConsumptionHistoryCriteria criteria) {
+        log.debug("REST request to count ConsumptionHistories by criteria: {}", criteria);
+        return ResponseEntity.ok().body(consumptionHistoryQueryService.countByCriteria(criteria));
     }
 
     /**

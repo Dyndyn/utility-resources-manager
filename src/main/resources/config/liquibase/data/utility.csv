@@ -8,3 +8,4 @@ id;name;constant;predictable
 7;Вивіз сміття;true;false
 8;Домофон;true;false
 9;Квартплата;true;false
+10;Інше;true;false

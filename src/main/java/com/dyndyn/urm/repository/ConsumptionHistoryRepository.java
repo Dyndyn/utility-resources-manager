@@ -13,7 +13,8 @@ import org.springframework.stereotype.Repository;
  * Spring Data JPA repository for the ConsumptionHistory entity.
  */
 @Repository
-public interface ConsumptionHistoryRepository extends JpaRepository<ConsumptionHistory, Long> {
+public interface ConsumptionHistoryRepository
+    extends JpaRepository<ConsumptionHistory, Long>, JpaSpecificationExecutor<ConsumptionHistory> {
     default Optional<ConsumptionHistory> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
     }

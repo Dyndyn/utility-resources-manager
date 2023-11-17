@@ -67,4 +67,4 @@ relationship OneToMany {
 }
 
 use mapstruct, serviceImpl, pagination for all
-use filter for ConsumptionHistory
+filter ConsumptionHistory
