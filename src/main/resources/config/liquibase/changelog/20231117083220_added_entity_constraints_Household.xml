@@ -9,15 +9,15 @@
     <changeSet id="20231117083220-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="household_id"
-                                 baseTableName="rel_household__user"
-                                 constraintName="fk_rel_household__user__household_id"
+                                 baseTableName="household_user"
+                                 constraintName="fk_household_user__household_id"
                                  referencedColumnNames="id"
                                  referencedTableName="household"
                                  />
 
         <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="rel_household__user"
-                                 constraintName="fk_rel_household__user__user_id"
+                                 baseTableName="household_user"
+                                 constraintName="fk_household_user__user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"
                                  />

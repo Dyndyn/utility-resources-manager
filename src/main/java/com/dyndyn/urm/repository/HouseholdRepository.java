@@ -25,15 +25,15 @@ public interface HouseholdRepository extends HouseholdRepositoryWithBagRelations
         return this.fetchBagRelationships(this.findAllWithToOneRelationships());
     }
 
-    default Page<Household> findAllWithEagerRelationships(Pageable pageable) {
-        return this.fetchBagRelationships(this.findAllWithToOneRelationships(pageable));
+    default Page<Household> findAllWithEagerRelationships(Pageable pageable, String login) {
+        return this.fetchBagRelationships(this.findAllWithToOneRelationships(pageable, login));
     }
 
     @Query(
-        value = "select household from Household household left join fetch household.city",
-        countQuery = "select count(household) from Household household"
+        value = "select household from Household household left join fetch household.city join household.users u where u.login = :login",
+        countQuery = "select count(household) from Household household join household.users u where u.login = :login"
     )
-    Page<Household> findAllWithToOneRelationships(Pageable pageable);
+    Page<Household> findAllWithToOneRelationships(Pageable pageable, @Param("login") String login);
 
     @Query("select household from Household household left join fetch household.city")
     List<Household> findAllWithToOneRelationships();

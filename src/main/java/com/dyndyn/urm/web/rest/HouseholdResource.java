@@ -1,6 +1,7 @@
 package com.dyndyn.urm.web.rest;
 
 import com.dyndyn.urm.repository.HouseholdRepository;
+import com.dyndyn.urm.security.SecurityUtils;
 import com.dyndyn.urm.service.HouseholdService;
 import com.dyndyn.urm.service.dto.HouseholdDTO;
 import com.dyndyn.urm.web.rest.errors.BadRequestAlertException;
@@ -145,7 +146,7 @@ public class HouseholdResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of households in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<HouseholdDTO>> getAllHouseholds(
+    public ResponseEntity<List<HouseholdDTO>> getMyHouseholds(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable,
         @RequestParam(required = false, defaultValue = "true") boolean eagerload
     ) {

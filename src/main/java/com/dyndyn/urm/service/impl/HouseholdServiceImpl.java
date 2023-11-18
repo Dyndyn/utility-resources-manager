@@ -2,6 +2,7 @@ package com.dyndyn.urm.service.impl;
 
 import com.dyndyn.urm.domain.Household;
 import com.dyndyn.urm.repository.HouseholdRepository;
+import com.dyndyn.urm.security.SecurityUtils;
 import com.dyndyn.urm.service.HouseholdService;
 import com.dyndyn.urm.service.dto.HouseholdDTO;
 import com.dyndyn.urm.service.mapper.HouseholdMapper;
@@ -70,7 +71,9 @@ public class HouseholdServiceImpl implements HouseholdService {
     }
 
     public Page<HouseholdDTO> findAllWithEagerRelationships(Pageable pageable) {
-        return householdRepository.findAllWithEagerRelationships(pageable).map(householdMapper::toDto);
+        return householdRepository
+            .findAllWithEagerRelationships(pageable, SecurityUtils.getCurrentUserLoginOrThrow())
+            .map(householdMapper::toDto);
     }
 
     @Override

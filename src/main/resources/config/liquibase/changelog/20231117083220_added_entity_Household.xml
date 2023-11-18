@@ -32,7 +32,7 @@
 
     <changeSet id="20231117083220-1-relations" author="jhipster">
 
-        <createTable tableName="rel_household__user">
+        <createTable tableName="household_user">
             <column name="user_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -41,7 +41,7 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="household_id, user_id" tableName="rel_household__user"/>
+        <addPrimaryKey columnNames="household_id, user_id" tableName="household_user"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -54,7 +54,7 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="20231117083220-1-data" author="jhipster" context="faker">
+    <changeSet id="20231117083220-1-data-1" author="jhipster">
         <loadData
                   file="config/liquibase/data/household.csv"
                   separator=";"
@@ -65,6 +65,18 @@
             <column name="area" type="numeric"/>
             <column name="residents" type="numeric"/>
             <column name="city_id" type="numeric"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+
+    <changeSet id="20231117083220-1-data-2" author="jhipster">
+        <loadData
+                  file="config/liquibase/data/household_user.csv"
+                  separator=";"
+                  tableName="household_user"
+                  usePreparedStatements="true">
+            <column name="user_id" type="numeric"/>
+            <column name="household_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

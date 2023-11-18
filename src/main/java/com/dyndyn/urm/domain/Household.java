@@ -45,7 +45,7 @@ public class Household implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "rel_household__user",
+        name = "household_user",
         joinColumns = @JoinColumn(name = "household_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
