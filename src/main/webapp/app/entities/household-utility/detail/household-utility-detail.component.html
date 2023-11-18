@@ -12,10 +12,6 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ householdUtility.id }}</span>
-        </dd>
         <dt><span jhiTranslate="utilityResourcesManagerApp.householdUtility.name">Name</span></dt>
         <dd>
           <span>{{ householdUtility.name }}</span>
@@ -23,10 +19,6 @@
         <dt><span jhiTranslate="utilityResourcesManagerApp.householdUtility.accountId">Account Id</span></dt>
         <dd>
           <span>{{ householdUtility.accountId }}</span>
-        </dd>
-        <dt><span jhiTranslate="utilityResourcesManagerApp.householdUtility.active">Active</span></dt>
-        <dd>
-          <span>{{ householdUtility.active }}</span>
         </dd>
         <dt><span jhiTranslate="utilityResourcesManagerApp.householdUtility.household">Household</span></dt>
         <dd>
@@ -50,6 +42,22 @@
 
       <button type="button" [routerLink]="['/household-utility', householdUtility.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+
+      <button
+        type="submit"
+        [routerLink]="['/consumption-history']"
+        [queryParams]="{ 'filter[householdUtilityId.in]': householdUtility.id }"
+        class="btn btn-info"
+        data-cy="filterOtherEntityButton"
+      >
+        <fa-icon icon="eye"></fa-icon>
+        <span
+          class="d-none d-md-inline"
+          jhiTranslate="entity.action.show"
+          [translateValues]="{ otherEntity: ('utilityResourcesManagerApp.householdUtility.consumptionHistory' | translate) }"
+          >Show Consumption History</span
+        >
       </button>
     </div>
   </div>

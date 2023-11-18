@@ -34,12 +34,6 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="id">
-            <div class="d-flex">
-              <span jhiTranslate="global.field.id">ID</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
           <th scope="col" jhiSortBy="name">
             <div class="d-flex">
               <span jhiTranslate="utilityResourcesManagerApp.householdUtility.name">Name</span>
@@ -49,12 +43,6 @@
           <th scope="col" jhiSortBy="accountId">
             <div class="d-flex">
               <span jhiTranslate="utilityResourcesManagerApp.householdUtility.accountId">Account Id</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="active">
-            <div class="d-flex">
-              <span jhiTranslate="utilityResourcesManagerApp.householdUtility.active">Active</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -76,11 +64,9 @@
       <tbody>
         <tr *ngFor="let householdUtility of householdUtilities; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/household-utility', householdUtility.id, 'view']">{{ householdUtility.id }}</a>
+            <a [routerLink]="['/household-utility', householdUtility.id, 'view']">{{ householdUtility.name }}</a>
           </td>
-          <td>{{ householdUtility.name }}</td>
           <td>{{ householdUtility.accountId }}</td>
-          <td>{{ householdUtility.active }}</td>
           <td>
             <div *ngIf="householdUtility.household">
               <a [routerLink]="['/household', householdUtility.household.id, 'view']">{{ householdUtility.household.address }}</a>
