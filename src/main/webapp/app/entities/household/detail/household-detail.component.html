@@ -10,10 +10,6 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ household.id }}</span>
-        </dd>
         <dt><span jhiTranslate="utilityResourcesManagerApp.household.address">Address</span></dt>
         <dd>
           <span>{{ household.address }}</span>
@@ -28,7 +24,9 @@
         </dd>
         <dt><span jhiTranslate="utilityResourcesManagerApp.household.user">User</span></dt>
         <dd>
-          <span *ngFor="let user of household.users; let last = last"> {{ user.id }}{{ last ? '' : ', ' }} </span>
+          <span *ngFor="let user of household.users; let last = last">
+            {{ user.firstName }} {{ user.lastName }}{{ last ? '' : ', ' }}
+          </span>
         </dd>
         <dt><span jhiTranslate="utilityResourcesManagerApp.household.city">City</span></dt>
         <dd>

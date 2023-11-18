@@ -14,14 +14,13 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type HouseholdFormGroupInput = IHousehold | PartialWithRequiredKeyOf<NewHousehold>;
 
-type HouseholdFormDefaults = Pick<NewHousehold, 'id' | 'users'>;
+type HouseholdFormDefaults = Pick<NewHousehold, 'id'>;
 
 type HouseholdFormGroupContent = {
   id: FormControl<IHousehold['id'] | NewHousehold['id']>;
   address: FormControl<IHousehold['address']>;
   area: FormControl<IHousehold['area']>;
   residents: FormControl<IHousehold['residents']>;
-  users: FormControl<IHousehold['users']>;
   city: FormControl<IHousehold['city']>;
 };
 
@@ -51,7 +50,6 @@ export class HouseholdFormService {
       residents: new FormControl(householdRawValue.residents, {
         validators: [Validators.required],
       }),
-      users: new FormControl(householdRawValue.users ?? []),
       city: new FormControl(householdRawValue.city, {
         validators: [Validators.required],
       }),
@@ -75,7 +73,6 @@ export class HouseholdFormService {
   private getFormDefaults(): HouseholdFormDefaults {
     return {
       id: null,
-      users: [],
     };
   }
 }

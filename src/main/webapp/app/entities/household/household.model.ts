@@ -6,7 +6,7 @@ export interface IHousehold {
   address?: string | null;
   area?: number | null;
   residents?: number | null;
-  users?: Pick<IUser, 'id'>[] | null;
+  users?: Pick<IUser, 'id' | 'firstName' | 'lastName'>[] | null;
   city?: Pick<ICity, 'id' | 'name'> | null;
 }
 

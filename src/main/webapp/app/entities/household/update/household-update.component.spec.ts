@@ -6,8 +6,6 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
-import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/user.service';
 import { ICity } from 'app/entities/city/city.model';
 import { CityService } from 'app/entities/city/service/city.service';
 import { IHousehold } from '../household.model';
@@ -22,7 +20,6 @@ describe('Household Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let householdFormService: HouseholdFormService;
   let householdService: HouseholdService;
-  let userService: UserService;
   let cityService: CityService;
 
   beforeEach(() => {
@@ -45,35 +42,12 @@ describe('Household Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     householdFormService = TestBed.inject(HouseholdFormService);
     householdService = TestBed.inject(HouseholdService);
-    userService = TestBed.inject(UserService);
     cityService = TestBed.inject(CityService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should call User query and add missing value', () => {
-      const household: IHousehold = { id: 456 };
-      const users: IUser[] = [{ id: 13562 }];
-      household.users = users;
-
-      const userCollection: IUser[] = [{ id: 17961 }];
-      jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
-      const additionalUsers = [...users];
-      const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
-      jest.spyOn(userService, 'addUserToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ household });
-      comp.ngOnInit();
-
-      expect(userService.query).toHaveBeenCalled();
-      expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(
-        userCollection,
-        ...additionalUsers.map(expect.objectContaining),
-      );
-      expect(comp.usersSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should call City query and add missing value', () => {
       const household: IHousehold = { id: 456 };
       const city: ICity = { id: 32260 };
@@ -98,15 +72,12 @@ describe('Household Management Update Component', () => {
 
     it('Should update editForm', () => {
       const household: IHousehold = { id: 456 };
-      const user: IUser = { id: 504 };
-      household.users = [user];
       const city: ICity = { id: 12488 };
       household.city = city;
 
       activatedRoute.data = of({ household });
       comp.ngOnInit();
 
-      expect(comp.usersSharedCollection).toContain(user);
       expect(comp.citiesSharedCollection).toContain(city);
       expect(comp.household).toEqual(household);
     });
@@ -118,7 +89,7 @@ describe('Household Management Update Component', () => {
       const saveSubject = new Subject<HttpResponse<IHousehold>>();
       const household = { id: 123 };
       jest.spyOn(householdFormService, 'getHousehold').mockReturnValue(household);
-      jest.spyOn(householdService, 'update').mockReturnValue(saveSubject);
+      jest.spyOn(householdService, 'partialUpdate').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ household });
       comp.ngOnInit();
@@ -132,7 +103,7 @@ describe('Household Management Update Component', () => {
       // THEN
       expect(householdFormService.getHousehold).toHaveBeenCalled();
       expect(comp.previousState).toHaveBeenCalled();
-      expect(householdService.update).toHaveBeenCalledWith(expect.objectContaining(household));
+      expect(householdService.partialUpdate).toHaveBeenCalledWith(expect.objectContaining(household));
       expect(comp.isSaving).toEqual(false);
     });
 
@@ -163,7 +134,7 @@ describe('Household Management Update Component', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IHousehold>>();
       const household = { id: 123 };
-      jest.spyOn(householdService, 'update').mockReturnValue(saveSubject);
+      jest.spyOn(householdService, 'partialUpdate').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ household });
       comp.ngOnInit();
@@ -174,23 +145,13 @@ describe('Household Management Update Component', () => {
       saveSubject.error('This is an error!');
 
       // THEN
-      expect(householdService.update).toHaveBeenCalled();
+      expect(householdService.partialUpdate).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
     });
   });
 
   describe('Compare relationships', () => {
-    describe('compareUser', () => {
-      it('Should forward to userService', () => {
-        const entity = { id: 123 };
-        const entity2 = { id: 456 };
-        jest.spyOn(userService, 'compareUser');
-        comp.compareUser(entity, entity2);
-        expect(userService.compareUser).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
     describe('compareCity', () => {
       it('Should forward to cityService', () => {
         const entity = { id: 123 };

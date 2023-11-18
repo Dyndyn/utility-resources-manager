@@ -23,7 +23,6 @@ describe('Household Form Service', () => {
             address: expect.any(Object),
             area: expect.any(Object),
             residents: expect.any(Object),
-            users: expect.any(Object),
             city: expect.any(Object),
           }),
         );
@@ -38,7 +37,6 @@ describe('Household Form Service', () => {
             address: expect.any(Object),
             area: expect.any(Object),
             residents: expect.any(Object),
-            users: expect.any(Object),
             city: expect.any(Object),
           }),
         );

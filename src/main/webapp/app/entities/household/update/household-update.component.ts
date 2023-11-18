@@ -7,8 +7,6 @@ import { finalize, map } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/user.service';
 import { ICity } from 'app/entities/city/city.model';
 import { CityService } from 'app/entities/city/service/city.service';
 import { HouseholdService } from '../service/household.service';
@@ -25,7 +23,6 @@ export class HouseholdUpdateComponent implements OnInit {
   isSaving = false;
   household: IHousehold | null = null;
 
-  usersSharedCollection: IUser[] = [];
   citiesSharedCollection: ICity[] = [];
 
   editForm: HouseholdFormGroup = this.householdFormService.createHouseholdFormGroup();
@@ -33,12 +30,9 @@ export class HouseholdUpdateComponent implements OnInit {
   constructor(
     protected householdService: HouseholdService,
     protected householdFormService: HouseholdFormService,
-    protected userService: UserService,
     protected cityService: CityService,
     protected activatedRoute: ActivatedRoute,
   ) {}
-
-  compareUser = (o1: IUser | null, o2: IUser | null): boolean => this.userService.compareUser(o1, o2);
 
   compareCity = (o1: ICity | null, o2: ICity | null): boolean => this.cityService.compareCity(o1, o2);
 
@@ -61,7 +55,7 @@ export class HouseholdUpdateComponent implements OnInit {
     this.isSaving = true;
     const household = this.householdFormService.getHousehold(this.editForm);
     if (household.id !== null) {
-      this.subscribeToSaveResponse(this.householdService.update(household));
+      this.subscribeToSaveResponse(this.householdService.partialUpdate(household));
     } else {
       this.subscribeToSaveResponse(this.householdService.create(household));
     }
@@ -90,20 +84,10 @@ export class HouseholdUpdateComponent implements OnInit {
     this.household = household;
     this.householdFormService.resetForm(this.editForm, household);
 
-    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing<IUser>(
-      this.usersSharedCollection,
-      ...(household.users ?? []),
-    );
     this.citiesSharedCollection = this.cityService.addCityToCollectionIfMissing<ICity>(this.citiesSharedCollection, household.city);
   }
 
   protected loadRelationshipsOptions(): void {
-    this.userService
-      .query()
-      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
-      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, ...(this.household?.users ?? []))))
-      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
-
     this.cityService
       .query()
       .pipe(map((res: HttpResponse<ICity[]>) => res.body ?? []))

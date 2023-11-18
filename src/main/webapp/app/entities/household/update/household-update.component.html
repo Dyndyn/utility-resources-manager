@@ -60,21 +60,6 @@
         </div>
 
         <div class="mb-3">
-          <label jhiTranslate="utilityResourcesManagerApp.household.user" for="field_users">User</label>
-          <select
-            class="form-control"
-            id="field_users"
-            data-cy="user"
-            multiple
-            name="users"
-            formControlName="users"
-            [compareWith]="compareUser"
-          >
-            <option [ngValue]="userOption" *ngFor="let userOption of usersSharedCollection">{{ userOption.id }}</option>
-          </select>
-        </div>
-
-        <div class="mb-3">
           <label class="form-label" jhiTranslate="utilityResourcesManagerApp.household.city" for="field_city">City</label>
           <select class="form-control" id="field_city" data-cy="city" name="city" formControlName="city" [compareWith]="compareCity">
             <option *ngIf="editForm.get(['city'])!.value == null" [ngValue]="null" selected></option>

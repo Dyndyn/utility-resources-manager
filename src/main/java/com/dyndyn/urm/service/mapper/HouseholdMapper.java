@@ -23,8 +23,6 @@ public interface HouseholdMapper extends EntityMapper<HouseholdDTO, Household> {
     Household toEntity(HouseholdDTO householdDTO);
 
     @Named("userId")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
     UserDTO toDtoUserId(User user);
 
     @Named("userIdSet")
