@@ -68,3 +68,4 @@ relationship OneToMany {
 
 use mapstruct, serviceImpl, pagination for all
 filter ConsumptionHistory
+filter HouseholdUtility

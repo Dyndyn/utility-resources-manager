@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.dyndyn.urm.IntegrationTest;
+import com.dyndyn.urm.domain.ConsumptionHistory;
 import com.dyndyn.urm.domain.Household;
 import com.dyndyn.urm.domain.HouseholdUtility;
 import com.dyndyn.urm.domain.UtilityProvider;
@@ -295,6 +296,299 @@ class HouseholdUtilityResourceIT {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.accountId").value(DEFAULT_ACCOUNT_ID))
             .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()));
+    }
+
+    @Test
+    @Transactional
+    void getHouseholdUtilitiesByIdFiltering() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        Long id = householdUtility.getId();
+
+        defaultHouseholdUtilityShouldBeFound("id.equals=" + id);
+        defaultHouseholdUtilityShouldNotBeFound("id.notEquals=" + id);
+
+        defaultHouseholdUtilityShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultHouseholdUtilityShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultHouseholdUtilityShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultHouseholdUtilityShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where name equals to DEFAULT_NAME
+        defaultHouseholdUtilityShouldBeFound("name.equals=" + DEFAULT_NAME);
+
+        // Get all the householdUtilityList where name equals to UPDATED_NAME
+        defaultHouseholdUtilityShouldNotBeFound("name.equals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where name in DEFAULT_NAME or UPDATED_NAME
+        defaultHouseholdUtilityShouldBeFound("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME);
+
+        // Get all the householdUtilityList where name equals to UPDATED_NAME
+        defaultHouseholdUtilityShouldNotBeFound("name.in=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where name is not null
+        defaultHouseholdUtilityShouldBeFound("name.specified=true");
+
+        // Get all the householdUtilityList where name is null
+        defaultHouseholdUtilityShouldNotBeFound("name.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByNameContainsSomething() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where name contains DEFAULT_NAME
+        defaultHouseholdUtilityShouldBeFound("name.contains=" + DEFAULT_NAME);
+
+        // Get all the householdUtilityList where name contains UPDATED_NAME
+        defaultHouseholdUtilityShouldNotBeFound("name.contains=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByNameNotContainsSomething() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where name does not contain DEFAULT_NAME
+        defaultHouseholdUtilityShouldNotBeFound("name.doesNotContain=" + DEFAULT_NAME);
+
+        // Get all the householdUtilityList where name does not contain UPDATED_NAME
+        defaultHouseholdUtilityShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByAccountIdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where accountId equals to DEFAULT_ACCOUNT_ID
+        defaultHouseholdUtilityShouldBeFound("accountId.equals=" + DEFAULT_ACCOUNT_ID);
+
+        // Get all the householdUtilityList where accountId equals to UPDATED_ACCOUNT_ID
+        defaultHouseholdUtilityShouldNotBeFound("accountId.equals=" + UPDATED_ACCOUNT_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByAccountIdIsInShouldWork() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where accountId in DEFAULT_ACCOUNT_ID or UPDATED_ACCOUNT_ID
+        defaultHouseholdUtilityShouldBeFound("accountId.in=" + DEFAULT_ACCOUNT_ID + "," + UPDATED_ACCOUNT_ID);
+
+        // Get all the householdUtilityList where accountId equals to UPDATED_ACCOUNT_ID
+        defaultHouseholdUtilityShouldNotBeFound("accountId.in=" + UPDATED_ACCOUNT_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByAccountIdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where accountId is not null
+        defaultHouseholdUtilityShouldBeFound("accountId.specified=true");
+
+        // Get all the householdUtilityList where accountId is null
+        defaultHouseholdUtilityShouldNotBeFound("accountId.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByAccountIdContainsSomething() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where accountId contains DEFAULT_ACCOUNT_ID
+        defaultHouseholdUtilityShouldBeFound("accountId.contains=" + DEFAULT_ACCOUNT_ID);
+
+        // Get all the householdUtilityList where accountId contains UPDATED_ACCOUNT_ID
+        defaultHouseholdUtilityShouldNotBeFound("accountId.contains=" + UPDATED_ACCOUNT_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByAccountIdNotContainsSomething() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where accountId does not contain DEFAULT_ACCOUNT_ID
+        defaultHouseholdUtilityShouldNotBeFound("accountId.doesNotContain=" + DEFAULT_ACCOUNT_ID);
+
+        // Get all the householdUtilityList where accountId does not contain UPDATED_ACCOUNT_ID
+        defaultHouseholdUtilityShouldBeFound("accountId.doesNotContain=" + UPDATED_ACCOUNT_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByActiveIsEqualToSomething() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where active equals to DEFAULT_ACTIVE
+        defaultHouseholdUtilityShouldBeFound("active.equals=" + DEFAULT_ACTIVE);
+
+        // Get all the householdUtilityList where active equals to UPDATED_ACTIVE
+        defaultHouseholdUtilityShouldNotBeFound("active.equals=" + UPDATED_ACTIVE);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByActiveIsInShouldWork() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where active in DEFAULT_ACTIVE or UPDATED_ACTIVE
+        defaultHouseholdUtilityShouldBeFound("active.in=" + DEFAULT_ACTIVE + "," + UPDATED_ACTIVE);
+
+        // Get all the householdUtilityList where active equals to UPDATED_ACTIVE
+        defaultHouseholdUtilityShouldNotBeFound("active.in=" + UPDATED_ACTIVE);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByActiveIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where active is not null
+        defaultHouseholdUtilityShouldBeFound("active.specified=true");
+
+        // Get all the householdUtilityList where active is null
+        defaultHouseholdUtilityShouldNotBeFound("active.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByConsumptionHistoryIsEqualToSomething() throws Exception {
+        ConsumptionHistory consumptionHistory;
+        if (TestUtil.findAll(em, ConsumptionHistory.class).isEmpty()) {
+            householdUtilityRepository.saveAndFlush(householdUtility);
+            consumptionHistory = ConsumptionHistoryResourceIT.createEntity(em);
+        } else {
+            consumptionHistory = TestUtil.findAll(em, ConsumptionHistory.class).get(0);
+        }
+        em.persist(consumptionHistory);
+        em.flush();
+        householdUtility.addConsumptionHistory(consumptionHistory);
+        householdUtilityRepository.saveAndFlush(householdUtility);
+        Long consumptionHistoryId = consumptionHistory.getId();
+        // Get all the householdUtilityList where consumptionHistory equals to consumptionHistoryId
+        defaultHouseholdUtilityShouldBeFound("consumptionHistoryId.equals=" + consumptionHistoryId);
+
+        // Get all the householdUtilityList where consumptionHistory equals to (consumptionHistoryId + 1)
+        defaultHouseholdUtilityShouldNotBeFound("consumptionHistoryId.equals=" + (consumptionHistoryId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByHouseholdIsEqualToSomething() throws Exception {
+        Household household;
+        if (TestUtil.findAll(em, Household.class).isEmpty()) {
+            householdUtilityRepository.saveAndFlush(householdUtility);
+            household = HouseholdResourceIT.createEntity(em);
+        } else {
+            household = TestUtil.findAll(em, Household.class).get(0);
+        }
+        em.persist(household);
+        em.flush();
+        householdUtility.setHousehold(household);
+        householdUtilityRepository.saveAndFlush(householdUtility);
+        Long householdId = household.getId();
+        // Get all the householdUtilityList where household equals to householdId
+        defaultHouseholdUtilityShouldBeFound("householdId.equals=" + householdId);
+
+        // Get all the householdUtilityList where household equals to (householdId + 1)
+        defaultHouseholdUtilityShouldNotBeFound("householdId.equals=" + (householdId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByUtilityProviderIsEqualToSomething() throws Exception {
+        UtilityProvider utilityProvider;
+        if (TestUtil.findAll(em, UtilityProvider.class).isEmpty()) {
+            householdUtilityRepository.saveAndFlush(householdUtility);
+            utilityProvider = UtilityProviderResourceIT.createEntity(em);
+        } else {
+            utilityProvider = TestUtil.findAll(em, UtilityProvider.class).get(0);
+        }
+        em.persist(utilityProvider);
+        em.flush();
+        householdUtility.setUtilityProvider(utilityProvider);
+        householdUtilityRepository.saveAndFlush(householdUtility);
+        Long utilityProviderId = utilityProvider.getId();
+        // Get all the householdUtilityList where utilityProvider equals to utilityProviderId
+        defaultHouseholdUtilityShouldBeFound("utilityProviderId.equals=" + utilityProviderId);
+
+        // Get all the householdUtilityList where utilityProvider equals to (utilityProviderId + 1)
+        defaultHouseholdUtilityShouldNotBeFound("utilityProviderId.equals=" + (utilityProviderId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultHouseholdUtilityShouldBeFound(String filter) throws Exception {
+        restHouseholdUtilityMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(householdUtility.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].accountId").value(hasItem(DEFAULT_ACCOUNT_ID)))
+            .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
+
+        // Check, that the count call also returns 1
+        restHouseholdUtilityMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultHouseholdUtilityShouldNotBeFound(String filter) throws Exception {
+        restHouseholdUtilityMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restHouseholdUtilityMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
  * Spring Data JPA repository for the HouseholdUtility entity.
  */
 @Repository
-public interface HouseholdUtilityRepository extends JpaRepository<HouseholdUtility, Long> {
+public interface HouseholdUtilityRepository extends JpaRepository<HouseholdUtility, Long>, JpaSpecificationExecutor<HouseholdUtility> {
     default Optional<HouseholdUtility> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
     }

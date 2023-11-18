@@ -1,7 +1,9 @@
 package com.dyndyn.urm.web.rest;
 
 import com.dyndyn.urm.repository.HouseholdUtilityRepository;
+import com.dyndyn.urm.service.HouseholdUtilityQueryService;
 import com.dyndyn.urm.service.HouseholdUtilityService;
+import com.dyndyn.urm.service.criteria.HouseholdUtilityCriteria;
 import com.dyndyn.urm.service.dto.HouseholdUtilityDTO;
 import com.dyndyn.urm.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -42,12 +44,16 @@ public class HouseholdUtilityResource {
 
     private final HouseholdUtilityRepository householdUtilityRepository;
 
+    private final HouseholdUtilityQueryService householdUtilityQueryService;
+
     public HouseholdUtilityResource(
         HouseholdUtilityService householdUtilityService,
-        HouseholdUtilityRepository householdUtilityRepository
+        HouseholdUtilityRepository householdUtilityRepository,
+        HouseholdUtilityQueryService householdUtilityQueryService
     ) {
         this.householdUtilityService = householdUtilityService;
         this.householdUtilityRepository = householdUtilityRepository;
+        this.householdUtilityQueryService = householdUtilityQueryService;
     }
 
     /**
@@ -145,23 +151,31 @@ public class HouseholdUtilityResource {
      * {@code GET  /household-utilities} : get all the householdUtilities.
      *
      * @param pageable the pagination information.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of householdUtilities in body.
      */
     @GetMapping("")
     public ResponseEntity<List<HouseholdUtilityDTO>> getAllHouseholdUtilities(
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
-        @RequestParam(required = false, defaultValue = "true") boolean eagerload
+        HouseholdUtilityCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        log.debug("REST request to get a page of HouseholdUtilities");
-        Page<HouseholdUtilityDTO> page;
-        if (eagerload) {
-            page = householdUtilityService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = householdUtilityService.findAll(pageable);
-        }
+        log.debug("REST request to get HouseholdUtilities by criteria: {}", criteria);
+
+        Page<HouseholdUtilityDTO> page = householdUtilityQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /household-utilities/count} : count all the householdUtilities.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countHouseholdUtilities(HouseholdUtilityCriteria criteria) {
+        log.debug("REST request to count HouseholdUtilities by criteria: {}", criteria);
+        return ResponseEntity.ok().body(householdUtilityQueryService.countByCriteria(criteria));
     }
 
     /**
