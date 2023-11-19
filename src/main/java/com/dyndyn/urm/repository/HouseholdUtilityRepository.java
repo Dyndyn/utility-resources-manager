@@ -22,15 +22,15 @@ public interface HouseholdUtilityRepository extends JpaRepository<HouseholdUtili
         return this.findAllWithToOneRelationships();
     }
 
-    default Page<HouseholdUtility> findAllWithEagerRelationships(Pageable pageable) {
-        return this.findAllWithToOneRelationships(pageable);
+    default Page<HouseholdUtility> findAllWithEagerRelationships(Pageable pageable, String login) {
+        return this.findAllWithToOneRelationships(pageable, login);
     }
 
     @Query(
-        value = "select householdUtility from HouseholdUtility householdUtility left join fetch householdUtility.household left join fetch householdUtility.utilityProvider",
+        value = "select householdUtility from HouseholdUtility householdUtility left join fetch householdUtility.household left join fetch householdUtility.utilityProvider join household.users u where u.login = :login",
         countQuery = "select count(householdUtility) from HouseholdUtility householdUtility"
     )
-    Page<HouseholdUtility> findAllWithToOneRelationships(Pageable pageable);
+    Page<HouseholdUtility> findAllWithToOneRelationships(Pageable pageable, @Param("login") String login);
 
     @Query(
         "select householdUtility from HouseholdUtility householdUtility left join fetch householdUtility.household left join fetch householdUtility.utilityProvider"
