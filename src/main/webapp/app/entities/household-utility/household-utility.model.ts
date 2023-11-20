@@ -10,6 +10,7 @@ export interface IHouseholdUtility {
   id: number;
   name?: string | null;
   accountId?: string | null;
+  rate?: number | null;
   active?: boolean | null;
   household?: Pick<IHousehold, 'id' | 'address'> | null;
   utilityProvider?: Pick<IUtilityProvider, 'id' | 'name'> | null;

@@ -1,5 +1,6 @@
 package com.dyndyn.urm.web.rest;
 
+import static com.dyndyn.urm.web.rest.TestUtil.sameNumber;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Mockito.*;
@@ -16,6 +17,7 @@ import com.dyndyn.urm.service.HouseholdUtilityService;
 import com.dyndyn.urm.service.dto.HouseholdUtilityDTO;
 import com.dyndyn.urm.service.mapper.HouseholdUtilityMapper;
 import jakarta.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -48,6 +50,10 @@ class HouseholdUtilityResourceIT {
 
     private static final String DEFAULT_ACCOUNT_ID = "AAAAAAAAAA";
     private static final String UPDATED_ACCOUNT_ID = "BBBBBBBBBB";
+
+    private static final BigDecimal DEFAULT_RATE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_RATE = new BigDecimal(2);
+    private static final BigDecimal SMALLER_RATE = new BigDecimal(1 - 1);
 
     private static final Boolean DEFAULT_ACTIVE = false;
     private static final Boolean UPDATED_ACTIVE = true;
@@ -85,7 +91,11 @@ class HouseholdUtilityResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static HouseholdUtility createEntity(EntityManager em) {
-        HouseholdUtility householdUtility = new HouseholdUtility().name(DEFAULT_NAME).accountId(DEFAULT_ACCOUNT_ID).active(DEFAULT_ACTIVE);
+        HouseholdUtility householdUtility = new HouseholdUtility()
+            .name(DEFAULT_NAME)
+            .accountId(DEFAULT_ACCOUNT_ID)
+            .rate(DEFAULT_RATE)
+            .active(DEFAULT_ACTIVE);
         // Add required entity
         Household household;
         if (TestUtil.findAll(em, Household.class).isEmpty()) {
@@ -116,7 +126,11 @@ class HouseholdUtilityResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static HouseholdUtility createUpdatedEntity(EntityManager em) {
-        HouseholdUtility householdUtility = new HouseholdUtility().name(UPDATED_NAME).accountId(UPDATED_ACCOUNT_ID).active(UPDATED_ACTIVE);
+        HouseholdUtility householdUtility = new HouseholdUtility()
+            .name(UPDATED_NAME)
+            .accountId(UPDATED_ACCOUNT_ID)
+            .rate(UPDATED_RATE)
+            .active(UPDATED_ACTIVE);
         // Add required entity
         Household household;
         if (TestUtil.findAll(em, Household.class).isEmpty()) {
@@ -163,6 +177,7 @@ class HouseholdUtilityResourceIT {
         HouseholdUtility testHouseholdUtility = householdUtilityList.get(householdUtilityList.size() - 1);
         assertThat(testHouseholdUtility.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testHouseholdUtility.getAccountId()).isEqualTo(DEFAULT_ACCOUNT_ID);
+        assertThat(testHouseholdUtility.getRate()).isEqualByComparingTo(DEFAULT_RATE);
         assertThat(testHouseholdUtility.getActive()).isEqualTo(DEFAULT_ACTIVE);
     }
 
@@ -229,6 +244,26 @@ class HouseholdUtilityResourceIT {
 
     @Test
     @Transactional
+    void checkRateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = householdUtilityRepository.findAll().size();
+        // set the field null
+        householdUtility.setRate(null);
+
+        // Create the HouseholdUtility, which fails.
+        HouseholdUtilityDTO householdUtilityDTO = householdUtilityMapper.toDto(householdUtility);
+
+        restHouseholdUtilityMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(householdUtilityDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<HouseholdUtility> householdUtilityList = householdUtilityRepository.findAll();
+        assertThat(householdUtilityList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void checkActiveIsRequired() throws Exception {
         int databaseSizeBeforeTest = householdUtilityRepository.findAll().size();
         // set the field null
@@ -261,6 +296,7 @@ class HouseholdUtilityResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(householdUtility.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].accountId").value(hasItem(DEFAULT_ACCOUNT_ID)))
+            .andExpect(jsonPath("$.[*].rate").value(hasItem(sameNumber(DEFAULT_RATE))))
             .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
     }
 
@@ -295,6 +331,7 @@ class HouseholdUtilityResourceIT {
             .andExpect(jsonPath("$.id").value(householdUtility.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.accountId").value(DEFAULT_ACCOUNT_ID))
+            .andExpect(jsonPath("$.rate").value(sameNumber(DEFAULT_RATE)))
             .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()));
     }
 
@@ -448,6 +485,97 @@ class HouseholdUtilityResourceIT {
 
     @Test
     @Transactional
+    void getAllHouseholdUtilitiesByRateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where rate equals to DEFAULT_RATE
+        defaultHouseholdUtilityShouldBeFound("rate.equals=" + DEFAULT_RATE);
+
+        // Get all the householdUtilityList where rate equals to UPDATED_RATE
+        defaultHouseholdUtilityShouldNotBeFound("rate.equals=" + UPDATED_RATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByRateIsInShouldWork() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where rate in DEFAULT_RATE or UPDATED_RATE
+        defaultHouseholdUtilityShouldBeFound("rate.in=" + DEFAULT_RATE + "," + UPDATED_RATE);
+
+        // Get all the householdUtilityList where rate equals to UPDATED_RATE
+        defaultHouseholdUtilityShouldNotBeFound("rate.in=" + UPDATED_RATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByRateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where rate is not null
+        defaultHouseholdUtilityShouldBeFound("rate.specified=true");
+
+        // Get all the householdUtilityList where rate is null
+        defaultHouseholdUtilityShouldNotBeFound("rate.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByRateIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where rate is greater than or equal to DEFAULT_RATE
+        defaultHouseholdUtilityShouldBeFound("rate.greaterThanOrEqual=" + DEFAULT_RATE);
+
+        // Get all the householdUtilityList where rate is greater than or equal to UPDATED_RATE
+        defaultHouseholdUtilityShouldNotBeFound("rate.greaterThanOrEqual=" + UPDATED_RATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByRateIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where rate is less than or equal to DEFAULT_RATE
+        defaultHouseholdUtilityShouldBeFound("rate.lessThanOrEqual=" + DEFAULT_RATE);
+
+        // Get all the householdUtilityList where rate is less than or equal to SMALLER_RATE
+        defaultHouseholdUtilityShouldNotBeFound("rate.lessThanOrEqual=" + SMALLER_RATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByRateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where rate is less than DEFAULT_RATE
+        defaultHouseholdUtilityShouldNotBeFound("rate.lessThan=" + DEFAULT_RATE);
+
+        // Get all the householdUtilityList where rate is less than UPDATED_RATE
+        defaultHouseholdUtilityShouldBeFound("rate.lessThan=" + UPDATED_RATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllHouseholdUtilitiesByRateIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        householdUtilityRepository.saveAndFlush(householdUtility);
+
+        // Get all the householdUtilityList where rate is greater than DEFAULT_RATE
+        defaultHouseholdUtilityShouldNotBeFound("rate.greaterThan=" + DEFAULT_RATE);
+
+        // Get all the householdUtilityList where rate is greater than SMALLER_RATE
+        defaultHouseholdUtilityShouldBeFound("rate.greaterThan=" + SMALLER_RATE);
+    }
+
+    @Test
+    @Transactional
     void getAllHouseholdUtilitiesByActiveIsEqualToSomething() throws Exception {
         // Initialize the database
         householdUtilityRepository.saveAndFlush(householdUtility);
@@ -562,6 +690,7 @@ class HouseholdUtilityResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(householdUtility.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].accountId").value(hasItem(DEFAULT_ACCOUNT_ID)))
+            .andExpect(jsonPath("$.[*].rate").value(hasItem(sameNumber(DEFAULT_RATE))))
             .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
 
         // Check, that the count call also returns 1
@@ -610,7 +739,7 @@ class HouseholdUtilityResourceIT {
         HouseholdUtility updatedHouseholdUtility = householdUtilityRepository.findById(householdUtility.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedHouseholdUtility are not directly saved in db
         em.detach(updatedHouseholdUtility);
-        updatedHouseholdUtility.name(UPDATED_NAME).accountId(UPDATED_ACCOUNT_ID).active(UPDATED_ACTIVE);
+        updatedHouseholdUtility.name(UPDATED_NAME).accountId(UPDATED_ACCOUNT_ID).rate(UPDATED_RATE).active(UPDATED_ACTIVE);
         HouseholdUtilityDTO householdUtilityDTO = householdUtilityMapper.toDto(updatedHouseholdUtility);
 
         restHouseholdUtilityMockMvc
@@ -627,6 +756,7 @@ class HouseholdUtilityResourceIT {
         HouseholdUtility testHouseholdUtility = householdUtilityList.get(householdUtilityList.size() - 1);
         assertThat(testHouseholdUtility.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testHouseholdUtility.getAccountId()).isEqualTo(UPDATED_ACCOUNT_ID);
+        assertThat(testHouseholdUtility.getRate()).isEqualByComparingTo(UPDATED_RATE);
         assertThat(testHouseholdUtility.getActive()).isEqualTo(UPDATED_ACTIVE);
     }
 
@@ -709,7 +839,7 @@ class HouseholdUtilityResourceIT {
         HouseholdUtility partialUpdatedHouseholdUtility = new HouseholdUtility();
         partialUpdatedHouseholdUtility.setId(householdUtility.getId());
 
-        partialUpdatedHouseholdUtility.name(UPDATED_NAME);
+        partialUpdatedHouseholdUtility.name(UPDATED_NAME).active(UPDATED_ACTIVE);
 
         restHouseholdUtilityMockMvc
             .perform(
@@ -725,7 +855,8 @@ class HouseholdUtilityResourceIT {
         HouseholdUtility testHouseholdUtility = householdUtilityList.get(householdUtilityList.size() - 1);
         assertThat(testHouseholdUtility.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testHouseholdUtility.getAccountId()).isEqualTo(DEFAULT_ACCOUNT_ID);
-        assertThat(testHouseholdUtility.getActive()).isEqualTo(DEFAULT_ACTIVE);
+        assertThat(testHouseholdUtility.getRate()).isEqualByComparingTo(DEFAULT_RATE);
+        assertThat(testHouseholdUtility.getActive()).isEqualTo(UPDATED_ACTIVE);
     }
 
     @Test
@@ -740,7 +871,7 @@ class HouseholdUtilityResourceIT {
         HouseholdUtility partialUpdatedHouseholdUtility = new HouseholdUtility();
         partialUpdatedHouseholdUtility.setId(householdUtility.getId());
 
-        partialUpdatedHouseholdUtility.name(UPDATED_NAME).accountId(UPDATED_ACCOUNT_ID).active(UPDATED_ACTIVE);
+        partialUpdatedHouseholdUtility.name(UPDATED_NAME).accountId(UPDATED_ACCOUNT_ID).rate(UPDATED_RATE).active(UPDATED_ACTIVE);
 
         restHouseholdUtilityMockMvc
             .perform(
@@ -756,6 +887,7 @@ class HouseholdUtilityResourceIT {
         HouseholdUtility testHouseholdUtility = householdUtilityList.get(householdUtilityList.size() - 1);
         assertThat(testHouseholdUtility.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testHouseholdUtility.getAccountId()).isEqualTo(UPDATED_ACCOUNT_ID);
+        assertThat(testHouseholdUtility.getRate()).isEqualByComparingTo(UPDATED_RATE);
         assertThat(testHouseholdUtility.getActive()).isEqualTo(UPDATED_ACTIVE);
     }
 

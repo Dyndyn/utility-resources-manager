@@ -99,6 +99,9 @@ public class HouseholdUtilityQueryService extends QueryService<HouseholdUtility>
             if (criteria.getAccountId() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getAccountId(), HouseholdUtility_.accountId));
             }
+            if (criteria.getRate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getRate(), HouseholdUtility_.rate));
+            }
             if (criteria.getActive() != null) {
                 specification = specification.and(buildSpecification(criteria.getActive(), HouseholdUtility_.active));
             }

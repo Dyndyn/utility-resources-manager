@@ -31,6 +31,7 @@ entity Household {
 entity HouseholdUtility {
 	name String required
 	accountId String required
+	rate BigDecimal required
 	active Boolean required
 }
 

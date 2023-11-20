@@ -20,6 +20,9 @@
             <column name="account_id" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="rate" type="decimal(21,2)">
+                <constraints nullable="false" />
+            </column>
             <column name="active" type="boolean">
                 <constraints nullable="false" />
             </column>
@@ -51,6 +54,7 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
+            <column name="rate" type="numeric"/>
             <column name="account_id" type="string"/>
             <column name="active" type="boolean"/>
             <column name="household_id" type="numeric"/>

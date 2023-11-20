@@ -2,6 +2,7 @@ package com.dyndyn.urm.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -17,6 +18,9 @@ public class HouseholdUtilityDTO implements Serializable {
 
     @NotNull
     private String accountId;
+
+    @NotNull
+    private BigDecimal rate;
 
     @NotNull
     private Boolean active;
@@ -50,6 +54,14 @@ public class HouseholdUtilityDTO implements Serializable {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
+    }
+
+    public BigDecimal getRate() {
+        return rate;
+    }
+
+    public void setRate(BigDecimal rate) {
+        this.rate = rate;
     }
 
     public Boolean getActive() {
@@ -120,6 +132,7 @@ public class HouseholdUtilityDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", accountId='" + getAccountId() + "'" +
+            ", rate=" + getRate() +
             ", active='" + getActive() + "'" +
             ", household=" + getHousehold() +
             ", utilityProvider=" + getUtilityProvider() +

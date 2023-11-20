@@ -20,6 +20,7 @@ type HouseholdUtilityFormGroupContent = {
   id: FormControl<IHouseholdUtility['id'] | NewHouseholdUtility['id']>;
   name: FormControl<IHouseholdUtility['name']>;
   accountId: FormControl<IHouseholdUtility['accountId']>;
+  rate: FormControl<IHouseholdUtility['rate']>;
   active: FormControl<IHouseholdUtility['active']>;
   household: FormControl<IHouseholdUtility['household']>;
   utilityProvider: FormControl<IHouseholdUtility['utilityProvider']>;
@@ -46,6 +47,9 @@ export class HouseholdUtilityFormService {
         validators: [Validators.required],
       }),
       accountId: new FormControl(householdUtilityRawValue.accountId, {
+        validators: [Validators.required],
+      }),
+      rate: new FormControl(householdUtilityRawValue.rate, {
         validators: [Validators.required],
       }),
       active: new FormControl(householdUtilityRawValue.active, {

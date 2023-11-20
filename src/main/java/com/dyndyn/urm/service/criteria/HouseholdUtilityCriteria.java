@@ -27,6 +27,8 @@ public class HouseholdUtilityCriteria implements Serializable, Criteria {
 
     private StringFilter accountId;
 
+    private BigDecimalFilter rate;
+
     private BooleanFilter active;
 
     private LongFilter consumptionHistoryId;
@@ -43,6 +45,7 @@ public class HouseholdUtilityCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
         this.accountId = other.accountId == null ? null : other.accountId.copy();
+        this.rate = other.rate == null ? null : other.rate.copy();
         this.active = other.active == null ? null : other.active.copy();
         this.consumptionHistoryId = other.consumptionHistoryId == null ? null : other.consumptionHistoryId.copy();
         this.householdId = other.householdId == null ? null : other.householdId.copy();
@@ -98,6 +101,21 @@ public class HouseholdUtilityCriteria implements Serializable, Criteria {
 
     public void setAccountId(StringFilter accountId) {
         this.accountId = accountId;
+    }
+
+    public BigDecimalFilter getRate() {
+        return rate;
+    }
+
+    public BigDecimalFilter rate() {
+        if (rate == null) {
+            rate = new BigDecimalFilter();
+        }
+        return rate;
+    }
+
+    public void setRate(BigDecimalFilter rate) {
+        this.rate = rate;
     }
 
     public BooleanFilter getActive() {
@@ -181,6 +199,7 @@ public class HouseholdUtilityCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
             Objects.equals(accountId, that.accountId) &&
+            Objects.equals(rate, that.rate) &&
             Objects.equals(active, that.active) &&
             Objects.equals(consumptionHistoryId, that.consumptionHistoryId) &&
             Objects.equals(householdId, that.householdId) &&
@@ -191,7 +210,7 @@ public class HouseholdUtilityCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, accountId, active, consumptionHistoryId, householdId, utilityProviderId, distinct);
+        return Objects.hash(id, name, accountId, rate, active, consumptionHistoryId, householdId, utilityProviderId, distinct);
     }
 
     // prettier-ignore
@@ -201,6 +220,7 @@ public class HouseholdUtilityCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (accountId != null ? "accountId=" + accountId + ", " : "") +
+            (rate != null ? "rate=" + rate + ", " : "") +
             (active != null ? "active=" + active + ", " : "") +
             (consumptionHistoryId != null ? "consumptionHistoryId=" + consumptionHistoryId + ", " : "") +
             (householdId != null ? "householdId=" + householdId + ", " : "") +

@@ -46,6 +46,12 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="rate">
+            <div class="d-flex">
+              <span jhiTranslate="utilityResourcesManagerApp.householdUtility.rate">Rate</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="household.address">
             <div class="d-flex">
               <span jhiTranslate="utilityResourcesManagerApp.householdUtility.household">Household</span>
@@ -67,6 +73,7 @@
             <a [routerLink]="['/household-utility', householdUtility.id, 'view']">{{ householdUtility.name }}</a>
           </td>
           <td>{{ householdUtility.accountId }}</td>
+          <td>{{ householdUtility.rate }}</td>
           <td>
             <div *ngIf="householdUtility.household">
               <a [routerLink]="['/household', householdUtility.household.id, 'view']">{{ householdUtility.household.address }}</a>

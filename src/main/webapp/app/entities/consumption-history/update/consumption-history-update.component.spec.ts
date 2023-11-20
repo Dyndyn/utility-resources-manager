@@ -50,10 +50,10 @@ describe('ConsumptionHistory Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call HouseholdUtility query and add missing value', () => {
       const consumptionHistory: IConsumptionHistory = { id: 456 };
-      const householdUtility: IHouseholdUtility = { id: 1975 };
+      const householdUtility: IHouseholdUtility = { id: 1588 };
       consumptionHistory.householdUtility = householdUtility;
 
-      const householdUtilityCollection: IHouseholdUtility[] = [{ id: 26676 }];
+      const householdUtilityCollection: IHouseholdUtility[] = [{ id: 30436 }];
       jest.spyOn(householdUtilityService, 'query').mockReturnValue(of(new HttpResponse({ body: householdUtilityCollection })));
       const additionalHouseholdUtilities = [householdUtility];
       const expectedCollection: IHouseholdUtility[] = [...additionalHouseholdUtilities, ...householdUtilityCollection];
@@ -72,7 +72,7 @@ describe('ConsumptionHistory Management Update Component', () => {
 
     it('Should update editForm', () => {
       const consumptionHistory: IConsumptionHistory = { id: 456 };
-      const householdUtility: IHouseholdUtility = { id: 18763 };
+      const householdUtility: IHouseholdUtility = { id: 29669 };
       consumptionHistory.householdUtility = householdUtility;
 
       activatedRoute.data = of({ consumptionHistory });

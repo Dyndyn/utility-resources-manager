@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
@@ -32,6 +33,10 @@ public class HouseholdUtility implements Serializable {
     @NotNull
     @Column(name = "account_id", nullable = false)
     private String accountId;
+
+    @NotNull
+    @Column(name = "rate", precision = 21, scale = 2, nullable = false)
+    private BigDecimal rate;
 
     @NotNull
     @Column(name = "active", nullable = false)
@@ -91,6 +96,19 @@ public class HouseholdUtility implements Serializable {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
+    }
+
+    public BigDecimal getRate() {
+        return this.rate;
+    }
+
+    public HouseholdUtility rate(BigDecimal rate) {
+        this.setRate(rate);
+        return this;
+    }
+
+    public void setRate(BigDecimal rate) {
+        this.rate = rate;
     }
 
     public Boolean getActive() {
@@ -189,6 +207,7 @@ public class HouseholdUtility implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", accountId='" + getAccountId() + "'" +
+            ", rate=" + getRate() +
             ", active='" + getActive() + "'" +
             "}";
     }
