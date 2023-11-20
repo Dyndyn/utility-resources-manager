@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
-import { LineChartComponent } from 'app/entities/household-utility/chart/household-utility-chart.component';
+import { LineChartComponent } from 'app/entities/chart/household-utility-chart.component';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { IHouseholdUtility } from '../household-utility.model';
 

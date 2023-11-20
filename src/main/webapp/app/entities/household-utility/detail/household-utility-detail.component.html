@@ -47,10 +47,10 @@
         [label]="'Consumption'"
       ></jhi-household-utility-chart>
       <jhi-household-utility-chart
-        *ngIf="householdUtility.consumption"
+        *ngIf="householdUtility.cost"
         [labels]="householdUtility.cost!.month"
         [data]="householdUtility.cost!.data"
-        [label]="'Cost'"
+        [label]="'Costs'"
       ></jhi-household-utility-chart>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

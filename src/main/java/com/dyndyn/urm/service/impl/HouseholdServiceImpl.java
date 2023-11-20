@@ -1,12 +1,21 @@
 package com.dyndyn.urm.service.impl;
 
+import com.dyndyn.urm.domain.ConsumptionHistory;
 import com.dyndyn.urm.domain.Household;
 import com.dyndyn.urm.repository.HouseholdRepository;
 import com.dyndyn.urm.security.SecurityUtils;
 import com.dyndyn.urm.service.HouseholdService;
+import com.dyndyn.urm.service.dto.GraphDataDTO;
 import com.dyndyn.urm.service.dto.HouseholdDTO;
 import com.dyndyn.urm.service.mapper.HouseholdMapper;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -80,7 +89,28 @@ public class HouseholdServiceImpl implements HouseholdService {
     @Transactional(readOnly = true)
     public Optional<HouseholdDTO> findOne(Long id) {
         log.debug("Request to get Household : {}", id);
-        return householdRepository.findOneWithEagerRelationships(id).map(householdMapper::toDto);
+        return householdRepository
+            .findOneWithEagerRelationships(id)
+            .map(s -> {
+                HouseholdDTO dto = householdMapper.toDto(s);
+                Map<LocalDate, BigDecimal> monthlyCosts = s
+                    .getHouseholdUtilities()
+                    .stream()
+                    .flatMap(hu -> hu.getConsumptionHistories().stream())
+                    .collect(
+                        Collectors.groupingBy(
+                            ConsumptionHistory::getDate,
+                            Collectors.mapping(ConsumptionHistory::getCost, Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))
+                        )
+                    );
+                dto.setCosts(
+                    new GraphDataDTO(
+                        monthlyCosts.keySet().stream().sorted().toList(),
+                        monthlyCosts.entrySet().stream().sorted(Comparator.comparing(Entry::getKey)).map(Entry::getValue).toList()
+                    )
+                );
+                return dto;
+            });
     }
 
     @Override

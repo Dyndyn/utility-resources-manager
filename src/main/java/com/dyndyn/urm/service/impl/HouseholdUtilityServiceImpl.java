@@ -8,6 +8,7 @@ import com.dyndyn.urm.service.HouseholdUtilityService;
 import com.dyndyn.urm.service.dto.GraphDataDTO;
 import com.dyndyn.urm.service.dto.HouseholdUtilityDTO;
 import com.dyndyn.urm.service.mapper.HouseholdUtilityMapper;
+import java.util.Comparator;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,14 +92,24 @@ public class HouseholdUtilityServiceImpl implements HouseholdUtilityService {
                 HouseholdUtilityDTO dto = householdUtilityMapper.toDto(s);
                 dto.setConsumption(
                     new GraphDataDTO(
-                        s.getConsumptionHistories().stream().map(ConsumptionHistory::getDate).toList(),
-                        s.getConsumptionHistories().stream().map(ConsumptionHistory::getConsumption).toList()
+                        s.getConsumptionHistories().stream().map(ConsumptionHistory::getDate).sorted().toList(),
+                        s
+                            .getConsumptionHistories()
+                            .stream()
+                            .sorted(Comparator.comparing(ConsumptionHistory::getDate))
+                            .map(ConsumptionHistory::getConsumption)
+                            .toList()
                     )
                 );
                 dto.setCost(
                     new GraphDataDTO(
-                        s.getConsumptionHistories().stream().map(ConsumptionHistory::getDate).toList(),
-                        s.getConsumptionHistories().stream().map(ConsumptionHistory::getCost).toList()
+                        s.getConsumptionHistories().stream().map(ConsumptionHistory::getDate).sorted().toList(),
+                        s
+                            .getConsumptionHistories()
+                            .stream()
+                            .sorted(Comparator.comparing(ConsumptionHistory::getDate))
+                            .map(ConsumptionHistory::getCost)
+                            .toList()
                     )
                 );
                 return dto;

@@ -28,6 +28,8 @@ public class HouseholdDTO implements Serializable {
 
     private CityDTO city;
 
+    private GraphDataDTO costs;
+
     public Long getId() {
         return id;
     }
@@ -74,6 +76,14 @@ public class HouseholdDTO implements Serializable {
 
     public void setCity(CityDTO city) {
         this.city = city;
+    }
+
+    public GraphDataDTO getCosts() {
+        return costs;
+    }
+
+    public void setCosts(GraphDataDTO costs) {
+        this.costs = costs;
     }
 
     @Override
