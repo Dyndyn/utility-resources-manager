@@ -25,6 +25,9 @@ public class HouseholdUtilityDTO implements Serializable {
 
     private UtilityProviderDTO utilityProvider;
 
+    private GraphDataDTO consumption;
+    private GraphDataDTO cost;
+
     public Long getId() {
         return id;
     }
@@ -71,6 +74,22 @@ public class HouseholdUtilityDTO implements Serializable {
 
     public void setUtilityProvider(UtilityProviderDTO utilityProvider) {
         this.utilityProvider = utilityProvider;
+    }
+
+    public GraphDataDTO getConsumption() {
+        return consumption;
+    }
+
+    public void setConsumption(GraphDataDTO consumption) {
+        this.consumption = consumption;
+    }
+
+    public GraphDataDTO getCost() {
+        return cost;
+    }
+
+    public void setCost(GraphDataDTO cost) {
+        this.cost = cost;
     }
 
     @Override

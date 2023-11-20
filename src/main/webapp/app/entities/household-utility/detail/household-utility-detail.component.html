@@ -36,7 +36,18 @@
         </dd>
       </dl>
 
-      <jhi-household-utility-chart></jhi-household-utility-chart>
+      <jhi-household-utility-chart
+        *ngIf="householdUtility.consumption"
+        [labels]="householdUtility.consumption!.month"
+        [data]="householdUtility.consumption!.data"
+        [label]="'Consumption'"
+      ></jhi-household-utility-chart>
+      <jhi-household-utility-chart
+        *ngIf="householdUtility.consumption"
+        [labels]="householdUtility.cost!.month"
+        [data]="householdUtility.cost!.data"
+        [label]="'Cost'"
+      ></jhi-household-utility-chart>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>

@@ -1,9 +1,11 @@
 package com.dyndyn.urm.service.impl;
 
+import com.dyndyn.urm.domain.ConsumptionHistory;
 import com.dyndyn.urm.domain.HouseholdUtility;
 import com.dyndyn.urm.repository.HouseholdUtilityRepository;
 import com.dyndyn.urm.security.SecurityUtils;
 import com.dyndyn.urm.service.HouseholdUtilityService;
+import com.dyndyn.urm.service.dto.GraphDataDTO;
 import com.dyndyn.urm.service.dto.HouseholdUtilityDTO;
 import com.dyndyn.urm.service.mapper.HouseholdUtilityMapper;
 import java.util.Optional;
@@ -83,7 +85,24 @@ public class HouseholdUtilityServiceImpl implements HouseholdUtilityService {
     @Transactional(readOnly = true)
     public Optional<HouseholdUtilityDTO> findOne(Long id) {
         log.debug("Request to get HouseholdUtility : {}", id);
-        return householdUtilityRepository.findOneWithEagerRelationships(id).map(householdUtilityMapper::toDto);
+        return householdUtilityRepository
+            .findOneWithEagerRelationships(id)
+            .map(s -> {
+                HouseholdUtilityDTO dto = householdUtilityMapper.toDto(s);
+                dto.setConsumption(
+                    new GraphDataDTO(
+                        s.getConsumptionHistories().stream().map(ConsumptionHistory::getDate).toList(),
+                        s.getConsumptionHistories().stream().map(ConsumptionHistory::getConsumption).toList()
+                    )
+                );
+                dto.setCost(
+                    new GraphDataDTO(
+                        s.getConsumptionHistories().stream().map(ConsumptionHistory::getDate).toList(),
+                        s.getConsumptionHistories().stream().map(ConsumptionHistory::getCost).toList()
+                    )
+                );
+                return dto;
+            });
     }
 
     @Override

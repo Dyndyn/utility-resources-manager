@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
+
+import SharedModule from 'app/shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
@@ -6,17 +10,19 @@ import { BaseChartDirective } from 'ng2-charts';
   standalone: true,
   selector: 'jhi-household-utility-chart',
   templateUrl: './household-utility-chart.component.html',
-  // styleUrls: [ './app.component.css' ]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class LineChartComponent {
-  title = 'ng2-charts-demo';
+  @Input() labels: string[] = [];
+  @Input() data: number[] = [];
+  @Input() label: string = '';
 
   public lineChartData: ChartConfiguration<'line'>['data'] = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: this.labels,
     datasets: [
       {
-        data: [65, 59, 80, 81, 56, 55, 40],
-        label: 'Series A',
+        data: this.data,
+        label: this.label,
         fill: true,
         tension: 0.5,
         borderColor: 'black',
@@ -32,4 +38,15 @@ export class LineChartComponent {
   constructor() {}
 
   ngOnInit() {}
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.labels) {
+      this.lineChartData.labels = changes.labels.currentValue as unknown as string[];
+    }
+    if (changes.data) {
+      this.lineChartData['datasets'][0]['data'] = changes.data.currentValue as unknown as number[];
+    }
+    if (changes.label) {
+      this.lineChartData['datasets'][0]['label'] = changes.label.currentValue as unknown as string;
+    }
+  }
 }
