@@ -1,6 +1,7 @@
 package com.dyndyn.urm.service.impl;
 
 import com.dyndyn.urm.domain.ConsumptionHistory;
+import com.dyndyn.urm.domain.ConsumptionPrediction;
 import com.dyndyn.urm.domain.HouseholdUtility;
 import com.dyndyn.urm.repository.HouseholdUtilityRepository;
 import com.dyndyn.urm.security.SecurityUtils;
@@ -8,6 +9,7 @@ import com.dyndyn.urm.service.HouseholdUtilityService;
 import com.dyndyn.urm.service.dto.GraphDataDTO;
 import com.dyndyn.urm.service.dto.HouseholdUtilityDTO;
 import com.dyndyn.urm.service.mapper.HouseholdUtilityMapper;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -98,6 +100,25 @@ public class HouseholdUtilityServiceImpl implements HouseholdUtilityService {
                             .stream()
                             .sorted(Comparator.comparing(ConsumptionHistory::getDate))
                             .map(ConsumptionHistory::getConsumption)
+                            .toList()
+                    )
+                );
+                LocalDate lastMonth = dto.getConsumption().getMonth().get(dto.getConsumption().getMonth().size() - 1);
+                dto.setPredictedConsumption(
+                    new GraphDataDTO(
+                        s
+                            .getConsumptionPredictions()
+                            .stream()
+                            .map(ConsumptionPrediction::getDate)
+                            .sorted()
+                            .filter(cp -> cp.isAfter(lastMonth))
+                            .toList(),
+                        s
+                            .getConsumptionPredictions()
+                            .stream()
+                            .sorted(Comparator.comparing(ConsumptionPrediction::getDate))
+                            .filter(cp -> cp.getDate().isAfter(lastMonth))
+                            .map(ConsumptionPrediction::getConsumption)
                             .toList()
                     )
                 );

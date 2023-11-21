@@ -15,6 +15,7 @@ export interface IHouseholdUtility {
   household?: Pick<IHousehold, 'id' | 'address'> | null;
   utilityProvider?: Pick<IUtilityProvider, 'id' | 'name'> | null;
   consumption?: GraphData | null;
+  predictedConsumption?: GraphData | null;
   cost?: GraphData | null;
 }
 

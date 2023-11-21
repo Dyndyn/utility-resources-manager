@@ -30,6 +30,7 @@ public class HouseholdUtilityDTO implements Serializable {
     private UtilityProviderDTO utilityProvider;
 
     private GraphDataDTO consumption;
+    private GraphDataDTO predictedConsumption;
     private GraphDataDTO cost;
 
     public Long getId() {
@@ -94,6 +95,14 @@ public class HouseholdUtilityDTO implements Serializable {
 
     public void setConsumption(GraphDataDTO consumption) {
         this.consumption = consumption;
+    }
+
+    public GraphDataDTO getPredictedConsumption() {
+        return predictedConsumption;
+    }
+
+    public void setPredictedConsumption(GraphDataDTO predictedConsumption) {
+        this.predictedConsumption = predictedConsumption;
     }
 
     public GraphDataDTO getCost() {

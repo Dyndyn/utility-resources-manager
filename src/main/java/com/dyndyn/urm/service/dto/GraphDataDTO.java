@@ -1,10 +1,11 @@
 package com.dyndyn.urm.service.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-public class GraphDataDTO {
+public class GraphDataDTO implements Serializable {
 
     private List<LocalDate> month;
     private List<BigDecimal> data;

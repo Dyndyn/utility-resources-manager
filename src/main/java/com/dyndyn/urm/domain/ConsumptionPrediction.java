@@ -1,8 +1,14 @@
 package com.dyndyn.urm.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,13 +16,13 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A ConsumptionHistory.
+ * A ConsumptionPrediction.
  */
 @Entity
-@Table(name = "consumption_history")
+@Table(name = "consumption_prediction")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ConsumptionHistory implements Serializable {
+public class ConsumptionPrediction implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,9 +34,6 @@ public class ConsumptionHistory implements Serializable {
     @NotNull
     @Column(name = "consumption", precision = 21, scale = 2, nullable = false)
     private BigDecimal consumption;
-
-    @Column(name = "cost", precision = 21, scale = 2)
-    private BigDecimal cost;
 
     @NotNull
     @Column(name = "date", nullable = false)
@@ -47,7 +50,7 @@ public class ConsumptionHistory implements Serializable {
         return this.id;
     }
 
-    public ConsumptionHistory id(Long id) {
+    public ConsumptionPrediction id(Long id) {
         this.setId(id);
         return this;
     }
@@ -60,7 +63,7 @@ public class ConsumptionHistory implements Serializable {
         return this.consumption;
     }
 
-    public ConsumptionHistory consumption(BigDecimal consumption) {
+    public ConsumptionPrediction consumption(BigDecimal consumption) {
         this.setConsumption(consumption);
         return this;
     }
@@ -69,24 +72,11 @@ public class ConsumptionHistory implements Serializable {
         this.consumption = consumption;
     }
 
-    public BigDecimal getCost() {
-        return this.cost;
-    }
-
-    public ConsumptionHistory cost(BigDecimal cost) {
-        this.setCost(cost);
-        return this;
-    }
-
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
-    }
-
     public LocalDate getDate() {
         return this.date;
     }
 
-    public ConsumptionHistory date(LocalDate date) {
+    public ConsumptionPrediction date(LocalDate date) {
         this.setDate(date);
         return this;
     }
@@ -103,7 +93,7 @@ public class ConsumptionHistory implements Serializable {
         this.householdUtility = householdUtility;
     }
 
-    public ConsumptionHistory householdUtility(HouseholdUtility householdUtility) {
+    public ConsumptionPrediction householdUtility(HouseholdUtility householdUtility) {
         this.setHouseholdUtility(householdUtility);
         return this;
     }
@@ -115,10 +105,10 @@ public class ConsumptionHistory implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ConsumptionHistory)) {
+        if (!(o instanceof ConsumptionPrediction)) {
             return false;
         }
-        return getId() != null && getId().equals(((ConsumptionHistory) o).getId());
+        return getId() != null && getId().equals(((ConsumptionPrediction) o).getId());
     }
 
     @Override
@@ -133,7 +123,6 @@ public class ConsumptionHistory implements Serializable {
         return "ConsumptionHistory{" +
             "id=" + getId() +
             ", consumption=" + getConsumption() +
-            ", cost=" + getCost() +
             ", date='" + getDate() + "'" +
             "}";
     }

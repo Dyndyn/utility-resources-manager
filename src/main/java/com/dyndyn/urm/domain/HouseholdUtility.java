@@ -47,6 +47,11 @@ public class HouseholdUtility implements Serializable {
     @JsonIgnoreProperties(value = { "householdUtility" }, allowSetters = true)
     private Set<ConsumptionHistory> consumptionHistories = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "householdUtility")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "householdUtility" }, allowSetters = true)
+    private Set<ConsumptionPrediction> consumptionPredictions = new HashSet<>();
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = { "householdUtilities", "users", "city" }, allowSetters = true)
@@ -153,6 +158,14 @@ public class HouseholdUtility implements Serializable {
         this.consumptionHistories.remove(consumptionHistory);
         consumptionHistory.setHouseholdUtility(null);
         return this;
+    }
+
+    public Set<ConsumptionPrediction> getConsumptionPredictions() {
+        return consumptionPredictions;
+    }
+
+    public void setConsumptionPredictions(Set<ConsumptionPrediction> consumptionPredictions) {
+        this.consumptionPredictions = consumptionPredictions;
     }
 
     public Household getHousehold() {

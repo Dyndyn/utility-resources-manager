@@ -19,6 +19,7 @@
     <include file="config/liquibase/changelog/20231117083220_added_entity_Household.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231117083320_added_entity_HouseholdUtility.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231117083420_added_entity_ConsumptionHistory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231120083420_added_entity_ConsumptionPrediction.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20231117082720_added_entity_constraints_City.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231117082820_added_entity_constraints_Region.xml" relativeToChangelogFile="false"/>
@@ -26,6 +27,7 @@
     <include file="config/liquibase/changelog/20231117083220_added_entity_constraints_Household.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231117083320_added_entity_constraints_HouseholdUtility.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231117083420_added_entity_constraints_ConsumptionHistory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231120083420_added_entity_constraints_ConsumptionPrediction.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

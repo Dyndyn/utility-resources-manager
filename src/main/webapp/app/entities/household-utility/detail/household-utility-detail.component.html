@@ -45,6 +45,9 @@
         [labels]="householdUtility.consumption!.month"
         [data]="householdUtility.consumption!.data"
         [label]="'Consumption'"
+        [predictedLabels]="householdUtility.predictedConsumption!.month"
+        [predictedData]="householdUtility.predictedConsumption!.data"
+        [predictedLabel]="'Prediction'"
       ></jhi-household-utility-chart>
       <jhi-household-utility-chart
         *ngIf="householdUtility.cost"
