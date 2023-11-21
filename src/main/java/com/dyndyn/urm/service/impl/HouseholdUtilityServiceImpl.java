@@ -92,36 +92,38 @@ public class HouseholdUtilityServiceImpl implements HouseholdUtilityService {
             .findOneWithEagerRelationships(id)
             .map(s -> {
                 HouseholdUtilityDTO dto = householdUtilityMapper.toDto(s);
-                dto.setConsumption(
-                    new GraphDataDTO(
-                        s.getConsumptionHistories().stream().map(ConsumptionHistory::getDate).sorted().toList(),
-                        s
-                            .getConsumptionHistories()
-                            .stream()
-                            .sorted(Comparator.comparing(ConsumptionHistory::getDate))
-                            .map(ConsumptionHistory::getConsumption)
-                            .toList()
-                    )
-                );
-                LocalDate lastMonth = dto.getConsumption().getMonth().get(dto.getConsumption().getMonth().size() - 1);
-                dto.setPredictedConsumption(
-                    new GraphDataDTO(
-                        s
-                            .getConsumptionPredictions()
-                            .stream()
-                            .map(ConsumptionPrediction::getDate)
-                            .sorted()
-                            .filter(cp -> cp.isAfter(lastMonth))
-                            .toList(),
-                        s
-                            .getConsumptionPredictions()
-                            .stream()
-                            .sorted(Comparator.comparing(ConsumptionPrediction::getDate))
-                            .filter(cp -> cp.getDate().isAfter(lastMonth))
-                            .map(ConsumptionPrediction::getConsumption)
-                            .toList()
-                    )
-                );
+                if (Boolean.FALSE.equals(s.getUtilityProvider().getUtility().getConstant())) {
+                    dto.setConsumption(
+                        new GraphDataDTO(
+                            s.getConsumptionHistories().stream().map(ConsumptionHistory::getDate).sorted().toList(),
+                            s
+                                .getConsumptionHistories()
+                                .stream()
+                                .sorted(Comparator.comparing(ConsumptionHistory::getDate))
+                                .map(ConsumptionHistory::getConsumption)
+                                .toList()
+                        )
+                    );
+                    LocalDate lastMonth = dto.getConsumption().getMonth().get(dto.getConsumption().getMonth().size() - 1);
+                    dto.setPredictedConsumption(
+                        new GraphDataDTO(
+                            s
+                                .getConsumptionPredictions()
+                                .stream()
+                                .map(ConsumptionPrediction::getDate)
+                                .sorted()
+                                .filter(cp -> cp.isAfter(lastMonth))
+                                .toList(),
+                            s
+                                .getConsumptionPredictions()
+                                .stream()
+                                .sorted(Comparator.comparing(ConsumptionPrediction::getDate))
+                                .filter(cp -> cp.getDate().isAfter(lastMonth))
+                                .map(ConsumptionPrediction::getConsumption)
+                                .toList()
+                        )
+                    );
+                }
                 dto.setCost(
                     new GraphDataDTO(
                         s.getConsumptionHistories().stream().map(ConsumptionHistory::getDate).sorted().toList(),

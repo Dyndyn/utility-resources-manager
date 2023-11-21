@@ -3,6 +3,7 @@ package com.dyndyn.urm.service.impl;
 import com.dyndyn.urm.domain.ConsumptionHistory;
 import com.dyndyn.urm.repository.ConsumptionHistoryRepository;
 import com.dyndyn.urm.service.ConsumptionHistoryService;
+import com.dyndyn.urm.service.ConsumptionPredictionService;
 import com.dyndyn.urm.service.dto.ConsumptionHistoryDTO;
 import com.dyndyn.urm.service.mapper.ConsumptionHistoryMapper;
 import java.util.Optional;
@@ -23,14 +24,17 @@ public class ConsumptionHistoryServiceImpl implements ConsumptionHistoryService 
     private final Logger log = LoggerFactory.getLogger(ConsumptionHistoryServiceImpl.class);
 
     private final ConsumptionHistoryRepository consumptionHistoryRepository;
+    private final ConsumptionPredictionService consumptionPredictionService;
 
     private final ConsumptionHistoryMapper consumptionHistoryMapper;
 
     public ConsumptionHistoryServiceImpl(
         ConsumptionHistoryRepository consumptionHistoryRepository,
+        ConsumptionPredictionService consumptionPredictionService,
         ConsumptionHistoryMapper consumptionHistoryMapper
     ) {
         this.consumptionHistoryRepository = consumptionHistoryRepository;
+        this.consumptionPredictionService = consumptionPredictionService;
         this.consumptionHistoryMapper = consumptionHistoryMapper;
     }
 
@@ -39,6 +43,7 @@ public class ConsumptionHistoryServiceImpl implements ConsumptionHistoryService 
         log.debug("Request to save ConsumptionHistory : {}", consumptionHistoryDTO);
         ConsumptionHistory consumptionHistory = consumptionHistoryMapper.toEntity(consumptionHistoryDTO);
         consumptionHistory = consumptionHistoryRepository.save(consumptionHistory);
+        consumptionPredictionService.generatePredictions(consumptionHistory.getHouseholdUtility());
         return consumptionHistoryMapper.toDto(consumptionHistory);
     }
 
