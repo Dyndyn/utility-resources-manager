@@ -31,6 +31,11 @@ public class City implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "city" }, allowSetters = true)
+    private Set<Temperature> temperatures = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "householdUtilities", "users", "city" }, allowSetters = true)
     private Set<Household> households = new HashSet<>();
 
@@ -65,6 +70,19 @@ public class City implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Temperature> getTemperatures() {
+        return temperatures;
+    }
+
+    public City temperatures(Set<Temperature> temperatures) {
+        this.temperatures = temperatures;
+        return this;
+    }
+
+    public void setTemperatures(Set<Temperature> temperatures) {
+        this.temperatures = temperatures;
     }
 
     public Set<Household> getHouseholds() {

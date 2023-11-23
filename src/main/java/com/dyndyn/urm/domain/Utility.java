@@ -30,6 +30,10 @@ public class Utility implements Serializable {
     private String name;
 
     @NotNull
+    @Column(name = "prediction_model")
+    private String predictionModel;
+
+    @NotNull
     @Column(name = "constant", nullable = false)
     private Boolean constant;
 
@@ -68,6 +72,14 @@ public class Utility implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPredictionModel() {
+        return predictionModel;
+    }
+
+    public void setPredictionModel(String predictionModel) {
+        this.predictionModel = predictionModel;
     }
 
     public Boolean getConstant() {

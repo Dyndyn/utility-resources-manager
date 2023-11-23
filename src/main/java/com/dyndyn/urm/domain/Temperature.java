@@ -16,13 +16,13 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A ConsumptionPrediction.
+ * A Temperature.
  */
 @Entity
-@Table(name = "consumption_prediction")
+@Table(name = "temperature")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ConsumptionPrediction implements Serializable {
+public class Temperature implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,8 +32,8 @@ public class ConsumptionPrediction implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "consumption", precision = 21, scale = 2, nullable = false)
-    private BigDecimal consumption;
+    @Column(name = "temperature", nullable = false)
+    private BigDecimal temperature;
 
     @NotNull
     @Column(name = "date", nullable = false)
@@ -41,8 +41,8 @@ public class ConsumptionPrediction implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "consumptionHistories", "consumptionPredictions", "household", "utilityProvider" }, allowSetters = true)
-    private HouseholdUtility householdUtility;
+    @JsonIgnoreProperties(value = { "households", "region" }, allowSetters = true)
+    private City city;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -50,7 +50,7 @@ public class ConsumptionPrediction implements Serializable {
         return this.id;
     }
 
-    public ConsumptionPrediction id(Long id) {
+    public Temperature id(Long id) {
         this.setId(id);
         return this;
     }
@@ -59,43 +59,43 @@ public class ConsumptionPrediction implements Serializable {
         this.id = id;
     }
 
-    public BigDecimal getConsumption() {
-        return this.consumption;
+    public BigDecimal getTemperature() {
+        return temperature;
     }
 
-    public ConsumptionPrediction consumption(BigDecimal consumption) {
-        this.setConsumption(consumption);
+    public Temperature temperature(BigDecimal temperature) {
+        this.temperature = temperature;
         return this;
     }
 
-    public void setConsumption(BigDecimal consumption) {
-        this.consumption = consumption;
+    public void setTemperature(BigDecimal temperature) {
+        this.temperature = temperature;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public Temperature city(City city) {
+        this.city = city;
+        return this;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public LocalDate getDate() {
-        return this.date;
+        return date;
     }
 
-    public ConsumptionPrediction date(LocalDate date) {
-        this.setDate(date);
+    public Temperature date(LocalDate date) {
+        this.date = date;
         return this;
     }
 
     public void setDate(LocalDate date) {
         this.date = date;
-    }
-
-    public HouseholdUtility getHouseholdUtility() {
-        return this.householdUtility;
-    }
-
-    public void setHouseholdUtility(HouseholdUtility householdUtility) {
-        this.householdUtility = householdUtility;
-    }
-
-    public ConsumptionPrediction householdUtility(HouseholdUtility householdUtility) {
-        this.setHouseholdUtility(householdUtility);
-        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -105,10 +105,10 @@ public class ConsumptionPrediction implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ConsumptionPrediction)) {
+        if (!(o instanceof Temperature)) {
             return false;
         }
-        return getId() != null && getId().equals(((ConsumptionPrediction) o).getId());
+        return getId() != null && getId().equals(((Temperature) o).getId());
     }
 
     @Override
@@ -120,10 +120,10 @@ public class ConsumptionPrediction implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "ConsumptionPrediction{" +
+        return "Temperature {" +
             "id=" + getId() +
-            ", consumption=" + getConsumption() +
-            ", date='" + getDate() + "'" +
+            ", value='" + getTemperature() + "'" +
+            ", name='" + getDate() + "'" +
             "}";
     }
 }

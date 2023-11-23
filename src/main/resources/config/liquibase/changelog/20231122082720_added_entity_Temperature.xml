@@ -7,23 +7,20 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!--
-        Added the entity Utility.
+        Added the entity City.
     -->
-    <changeSet id="20231117083020-1" author="jhipster">
-        <createTable tableName="utility">
+    <changeSet id="20231122082720-1" author="jhipster">
+        <createTable tableName="temperature">
             <column name="id" type="bigint" autoIncrement="true" startWith="1500">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(255)">
+            <column name="temperature" type="decimal(21,5)">
                 <constraints nullable="false" />
             </column>
-            <column name="prediction_model" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="constant" type="boolean">
+            <column name="date" type="date">
                 <constraints nullable="false" />
             </column>
-            <column name="predictable" type="boolean">
+            <column name="city_id" type="bigint">
                 <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -40,17 +37,16 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="20231117083020-1-data" author="jhipster">
+    <changeSet id="20231122082720-1-data" author="jhipster">
         <loadData
-                  file="config/liquibase/data/utility.csv"
+                  file="config/liquibase/data/temperature.csv"
                   separator=";"
-                  tableName="utility"
+                  tableName="temperature"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="name" type="string"/>
-            <column name="prediction_model" type="string"/>
-            <column name="constant" type="boolean"/>
-            <column name="predictable" type="boolean"/>
+            <column name="temperature" type="numeric"/>
+            <column name="date" type="date"/>
+            <column name="region_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
