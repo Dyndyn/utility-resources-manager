@@ -5,5 +5,5 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface ConsumptionPredictionService {
     @Transactional
-    void generatePredictions(HouseholdUtility householdUtility);
+    void generatePredictions(Long householdUtilityId);
 }

@@ -2,6 +2,8 @@ package com.dyndyn.urm.repository;
 
 import com.dyndyn.urm.domain.ConsumptionPrediction;
 import com.dyndyn.urm.domain.ConsumptionPrediction;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -45,4 +47,10 @@ public interface ConsumptionPredictionRepository
         "select consumptionPrediction from ConsumptionPrediction consumptionPrediction left join fetch consumptionPrediction.householdUtility where consumptionPrediction.id =:id"
     )
     Optional<ConsumptionPrediction> findOneWithToOneRelationships(@Param("id") Long id);
+
+    @Query(
+        "select consumptionPrediction.consumption from ConsumptionPrediction consumptionPrediction " +
+        "left join consumptionPrediction.householdUtility h where h.id =:id and consumptionPrediction.date = :date"
+    )
+    BigDecimal findConsumptionByHouseholdUtilityIdAndDate(@Param("id") Long householdUtilityId, @Param("date") LocalDate date);
 }

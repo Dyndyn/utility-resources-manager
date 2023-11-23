@@ -2,6 +2,8 @@ package com.dyndyn.urm.repository;
 
 import com.dyndyn.urm.domain.ConsumptionHistory;
 import com.dyndyn.urm.service.dto.RowDTO;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -43,6 +45,12 @@ public interface ConsumptionHistoryRepository
     Optional<ConsumptionHistory> findOneWithToOneRelationships(@Param("id") Long id);
 
     @Query(
+        value = "SELECT SUM(consumption) / (TIMESTAMPDIFF(MONTH, MIN(date), MAX(date)) + 1) FROM consumption_history WHERE household_utility_id = :id",
+        nativeQuery = true
+    )
+    BigDecimal findMeanConsumptionByHouseholdUtilityId(@Param("id") Long householdUtilityId);
+
+    @Query(
         value = "select new com.dyndyn.urm.service.dto.RowDTO(h.id, ch.consumption, h.area, h.residents, ch.date, t.temperature) " +
         "from ConsumptionHistory ch " +
         "left join ch.householdUtility hu " +
@@ -53,5 +61,10 @@ public interface ConsumptionHistoryRepository
         "left join up.utility u " +
         " where u.id =:id"
     )
-    List<RowDTO> findByUtilityId(@Param("id") Long utilityId);
+    List<RowDTO> findRowByUtilityId(@Param("id") Long utilityId);
+
+    @Query(
+        "select consumptionHistory.consumption from ConsumptionHistory consumptionHistory left join consumptionHistory.householdUtility h where h.id =:id and consumptionHistory.date = :date"
+    )
+    BigDecimal findConsumptionByHouseholdUtilityIdAndDate(@Param("id") Long householdUtilityId, @Param("date") LocalDate date);
 }

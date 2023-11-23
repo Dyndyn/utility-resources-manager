@@ -9,16 +9,16 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 @Service
-@Order(1)
-public class ElectricityPredictionModel extends RandomForestPredictionModel {
+@Order(2)
+public class GasPredictionModel extends RandomForestPredictionModel {
 
-    private final Logger log = LoggerFactory.getLogger(ElectricityPredictionModel.class);
+    private final Logger log = LoggerFactory.getLogger(GasPredictionModel.class);
 
-    public ElectricityPredictionModel(
+    public GasPredictionModel(
         ConsumptionHistoryRepository consumptionHistoryRepository,
         ConsumptionPredictionRepository consumptionPredictionRepository,
         TemperatureRepository temperatureRepository
     ) {
-        super(1L, consumptionHistoryRepository, consumptionPredictionRepository, temperatureRepository);
+        super(2L, consumptionHistoryRepository, consumptionPredictionRepository, temperatureRepository);
     }
 }

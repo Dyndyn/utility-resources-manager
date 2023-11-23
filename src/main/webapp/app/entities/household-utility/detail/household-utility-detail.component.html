@@ -64,6 +64,10 @@
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
 
+      <button type="button" (click)="regeneratePrediction()" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.predict">Regenerate Prediction</span>
+      </button>
+
       <button
         type="submit"
         [routerLink]="['/consumption-history']"

@@ -54,6 +54,10 @@ export class HouseholdUtilityService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  generatePredictions(id: number): Observable<HttpResponse<{}>> {
+    return this.http.post(`${this.resourceUrl}/${id}/consumption-predictions`, null, { observe: 'response' });
+  }
+
   getHouseholdUtilityIdentifier(householdUtility: Pick<IHouseholdUtility, 'id'>): number {
     return householdUtility.id;
   }

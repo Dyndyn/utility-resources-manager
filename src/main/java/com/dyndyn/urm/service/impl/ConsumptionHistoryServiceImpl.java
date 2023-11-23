@@ -43,7 +43,7 @@ public class ConsumptionHistoryServiceImpl implements ConsumptionHistoryService 
         log.debug("Request to save ConsumptionHistory : {}", consumptionHistoryDTO);
         ConsumptionHistory consumptionHistory = consumptionHistoryMapper.toEntity(consumptionHistoryDTO);
         consumptionHistory = consumptionHistoryRepository.save(consumptionHistory);
-        consumptionPredictionService.generatePredictions(consumptionHistory.getHouseholdUtility());
+        consumptionPredictionService.generatePredictions(consumptionHistory.getHouseholdUtility().getId());
         return consumptionHistoryMapper.toDto(consumptionHistory);
     }
 
