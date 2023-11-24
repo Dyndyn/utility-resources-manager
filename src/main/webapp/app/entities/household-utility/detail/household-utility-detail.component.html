@@ -41,6 +41,7 @@
       </dl>
 
       <jhi-household-utility-chart
+        #consumtionChart
         *ngIf="householdUtility.consumption"
         [labels]="householdUtility.consumption!.month"
         [data]="householdUtility.consumption!.data"
@@ -50,6 +51,7 @@
         [predictedLabel]="'Prediction'"
       ></jhi-household-utility-chart>
       <jhi-household-utility-chart
+        #costChart
         *ngIf="householdUtility.cost"
         [labels]="householdUtility.cost!.month"
         [data]="householdUtility.cost!.data"
@@ -65,7 +67,9 @@
       </button>
 
       <button type="button" (click)="regeneratePrediction()" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.predict">Regenerate Prediction</span>
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="utilityResourcesManagerApp.householdUtility.action.predict"
+          >Regenerate Prediction</span
+        >
       </button>
 
       <button

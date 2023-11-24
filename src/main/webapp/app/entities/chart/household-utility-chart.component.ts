@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,6 +19,7 @@ export class LineChartComponent {
   @Input() predictedLabels: string[] = [];
   @Input() predictedData: number[] = [];
   @Input() predictedLabel: string = '';
+  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
 
   public lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: this.labels,
@@ -54,7 +55,7 @@ export class LineChartComponent {
       this.lineChartData.labels = this.predictedLabels.concat(changes.labels.currentValue) as unknown as string[];
     }
     if (changes.predictedLabels) {
-      this.lineChartData.labels = changes.predictedLabels.currentValue.concat(this.labels) as unknown as string[];
+      this.lineChartData.labels = this.labels.concat(changes.predictedLabels.currentValue) as unknown as string[];
     }
     if (changes.data) {
       this.lineChartData['datasets'][0]['data'] = changes.data.currentValue as unknown as number[];
@@ -81,5 +82,6 @@ export class LineChartComponent {
     if (changes.predictedLabel) {
       this.lineChartData['datasets'][1]['label'] = changes.predictedLabel.currentValue as unknown as string;
     }
+    this.chart.update();
   }
 }

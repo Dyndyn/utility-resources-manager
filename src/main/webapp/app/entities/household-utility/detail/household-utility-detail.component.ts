@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
@@ -13,8 +13,9 @@ import { HouseholdUtilityService } from '../service/household-utility.service';
   templateUrl: './household-utility-detail.component.html',
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe, LineChartComponent],
 })
-export class HouseholdUtilityDetailComponent {
+export class HouseholdUtilityDetailComponent implements OnChanges {
   @Input() householdUtility: IHouseholdUtility | null = null;
+  @ViewChild('consumtionChart') consumtionChart!: LineChartComponent;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -28,8 +29,25 @@ export class HouseholdUtilityDetailComponent {
   regeneratePrediction(): void {
     this.householdUtilityService.generatePredictions(this.householdUtility!.id).subscribe(() => {
       this.householdUtilityService.find(this.householdUtility!.id).subscribe(hu => {
-        this.householdUtility = hu.body;
+        this.ngOnChanges({ householdUtility: new SimpleChange(this.householdUtility, hu.body, false) });
       });
     });
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.householdUtility = changes.householdUtility.currentValue;
+    if (this.householdUtility != null && this.consumtionChart != null) {
+      this.consumtionChart.ngOnChanges({
+        predictedData: new SimpleChange(
+          changes.householdUtility.previousValue!.predictedConsumption!.data,
+          changes.householdUtility.currentValue!.predictedConsumption!.data,
+          false,
+        ),
+        predictedLabels: new SimpleChange(
+          changes.householdUtility.previousValue!.predictedConsumption!.month,
+          changes.householdUtility.currentValue!.predictedConsumption!.month,
+          false,
+        ),
+      });
+    }
   }
 }

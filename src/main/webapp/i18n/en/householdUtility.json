@@ -24,7 +24,10 @@
       "active": "Active",
       "consumptionHistory": "Consumption History",
       "household": "Household",
-      "utilityProvider": "Utility Provider"
+      "utilityProvider": "Utility Provider",
+      "action": {
+        "predict": "Regenerate Prediction"
+      }
     }
   }
 }

@@ -14,6 +14,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -25,18 +26,15 @@ public class ConsumptionPredictionServiceImpl implements ConsumptionPredictionSe
 
     private final ConsumptionPredictionRepository consumptionPredictionRepository;
     private final HouseholdUtilityRepository householdUtilityRepository;
-    private final UtilityRepository utilityRepository;
     private final PredictionContext predictionContext;
 
     public ConsumptionPredictionServiceImpl(
         ConsumptionPredictionRepository consumptionPredictionRepository,
         HouseholdUtilityRepository householdUtilityRepository,
-        UtilityRepository utilityRepository,
         PredictionContext predictionContext
     ) {
         this.consumptionPredictionRepository = consumptionPredictionRepository;
         this.householdUtilityRepository = householdUtilityRepository;
-        this.utilityRepository = utilityRepository;
         this.predictionContext = predictionContext;
     }
 
@@ -53,7 +51,7 @@ public class ConsumptionPredictionServiceImpl implements ConsumptionPredictionSe
             .stream()
             .filter(cp -> !cp.getDate().isBefore(predictionStart))
             .collect(Collectors.toMap(ConsumptionPrediction::getDate, Function.identity()));
-        List<ConsumptionPrediction> allPredictions = IntStream
+        Set<ConsumptionPrediction> consumptionPredictions = IntStream
             .range(0, 11)
             .mapToObj(predictionStart::plusMonths)
             .map(month -> {
@@ -62,10 +60,10 @@ public class ConsumptionPredictionServiceImpl implements ConsumptionPredictionSe
                     m -> new ConsumptionPrediction().date(m).householdUtility(householdUtility)
                 );
                 cp.setConsumption(predictionModel.predict(householdUtility, month));
-                return cp;
+                return consumptionPredictionRepository.save(cp);
             })
-            .toList();
-        allPredictions.forEach(cp -> cp.setConsumption(householdUtility.getRate()));
-        consumptionPredictionRepository.saveAll(allPredictions);
+            .collect(Collectors.toSet());
+        householdUtility.setConsumptionPredictions(consumptionPredictions);
+        householdUtilityRepository.save(householdUtility);
     }
 }
