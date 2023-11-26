@@ -1,7 +1,7 @@
 package com.dyndyn.urm.repository;
 
 import com.dyndyn.urm.domain.ConsumptionHistory;
-import com.dyndyn.urm.service.dto.RowDTO;
+import com.dyndyn.urm.domain.RowDTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -51,7 +51,7 @@ public interface ConsumptionHistoryRepository
     BigDecimal findMeanConsumptionByHouseholdUtilityId(@Param("id") Long householdUtilityId);
 
     @Query(
-        value = "select new com.dyndyn.urm.service.dto.RowDTO(h.id, ch.consumption, h.area, h.residents, ch.date, t.temperature) " +
+        value = "select new com.dyndyn.urm.domain.RowDTO(h.id, ch.consumption, h.area, h.residents, ch.date, t.temperature) " +
         "from ConsumptionHistory ch " +
         "left join ch.householdUtility hu " +
         "left join hu.household h " +

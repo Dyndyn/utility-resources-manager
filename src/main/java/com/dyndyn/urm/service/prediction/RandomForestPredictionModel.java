@@ -1,11 +1,11 @@
 package com.dyndyn.urm.service.prediction;
 
 import com.dyndyn.urm.domain.HouseholdUtility;
+import com.dyndyn.urm.domain.RowDTO;
 import com.dyndyn.urm.domain.Temperature;
 import com.dyndyn.urm.repository.ConsumptionHistoryRepository;
 import com.dyndyn.urm.repository.ConsumptionPredictionRepository;
 import com.dyndyn.urm.repository.TemperatureRepository;
-import com.dyndyn.urm.service.dto.RowDTO;
 import jakarta.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.math.RoundingMode;

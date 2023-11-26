@@ -1,4 +1,4 @@
-package com.dyndyn.urm.service.dto;
+package com.dyndyn.urm.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
