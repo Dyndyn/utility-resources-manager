@@ -1,14 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 
 import { HouseholdUtilityDetailComponent } from './household-utility-detail.component';
+import { HouseholdUtilityService } from '../service/household-utility.service';
 
 describe('HouseholdUtility Management Detail Component', () => {
+  let service: HouseholdUtilityService;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HouseholdUtilityDetailComponent, RouterTestingModule.withRoutes([], { bindToComponentInputs: true })],
+      imports: [
+        HouseholdUtilityDetailComponent,
+        HttpClientTestingModule,
+        RouterTestingModule.withRoutes([], { bindToComponentInputs: true }),
+      ],
       providers: [
         provideRouter(
           [
@@ -24,6 +32,7 @@ describe('HouseholdUtility Management Detail Component', () => {
     })
       .overrideTemplate(HouseholdUtilityDetailComponent, '')
       .compileComponents();
+    service = TestBed.inject(HouseholdUtilityService);
   });
 
   describe('OnInit', () => {

@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -12,7 +12,7 @@ import { BaseChartDirective } from 'ng2-charts';
   templateUrl: './household-utility-chart.component.html',
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
-export class LineChartComponent {
+export class LineChartComponent implements OnChanges {
   @Input() labels: string[] = [];
   @Input() data: number[] = [];
   @Input() label: string = '';
@@ -49,15 +49,14 @@ export class LineChartComponent {
 
   constructor() {}
 
-  ngOnInit() {}
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.labels) {
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('labels' in changes) {
       this.lineChartData.labels = this.predictedLabels.concat(changes.labels.currentValue) as unknown as string[];
     }
-    if (changes.predictedLabels) {
+    if ('predictedLabels' in changes) {
       this.lineChartData.labels = this.labels.concat(changes.predictedLabels.currentValue) as unknown as string[];
     }
-    if (changes.data) {
+    if ('data' in changes) {
       this.lineChartData['datasets'][0]['data'] = changes.data.currentValue as unknown as number[];
       let predictedData = this.predictedData;
       if (changes.data.currentValue.length > 0) {
@@ -67,7 +66,7 @@ export class LineChartComponent {
       }
       this.lineChartData['datasets'][1]['data'] = predictedData;
     }
-    if (changes.predictedData) {
+    if ('predictedData' in changes) {
       let predictedData = changes.predictedData.currentValue;
       if (this.data.length > 0) {
         predictedData = Array(this.data.length - 1).fill(null);
@@ -76,10 +75,10 @@ export class LineChartComponent {
       }
       this.lineChartData['datasets'][1]['data'] = predictedData;
     }
-    if (changes.label) {
+    if ('label' in changes) {
       this.lineChartData['datasets'][0]['label'] = changes.label.currentValue as unknown as string;
     }
-    if (changes.predictedLabel) {
+    if ('predictedLabel' in changes) {
       this.lineChartData['datasets'][1]['label'] = changes.predictedLabel.currentValue as unknown as string;
     }
     this.chart.update();

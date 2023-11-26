@@ -15,7 +15,7 @@ import { HouseholdUtilityService } from '../service/household-utility.service';
 })
 export class HouseholdUtilityDetailComponent implements OnChanges {
   @Input() householdUtility: IHouseholdUtility | null = null;
-  @ViewChild('consumtionChart') consumtionChart!: LineChartComponent;
+  @ViewChild('consumtionChart') consumtionChart: LineChartComponent | null = null;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -38,13 +38,13 @@ export class HouseholdUtilityDetailComponent implements OnChanges {
     if (this.householdUtility != null && this.consumtionChart != null) {
       this.consumtionChart.ngOnChanges({
         predictedData: new SimpleChange(
-          changes.householdUtility.previousValue!.predictedConsumption!.data,
-          changes.householdUtility.currentValue!.predictedConsumption!.data,
+          changes.householdUtility.previousValue.predictedConsumption!.data,
+          changes.householdUtility.currentValue.predictedConsumption!.data,
           false,
         ),
         predictedLabels: new SimpleChange(
-          changes.householdUtility.previousValue!.predictedConsumption!.month,
-          changes.householdUtility.currentValue!.predictedConsumption!.month,
+          changes.householdUtility.previousValue.predictedConsumption!.month,
+          changes.householdUtility.currentValue.predictedConsumption!.month,
           false,
         ),
       });
