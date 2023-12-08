@@ -2,25 +2,25 @@
   "utilityResourcesManagerApp": {
     "region": {
       "home": {
-        "title": "Regions",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Створити новий Region",
-        "createOrEditLabel": "Створити чи редагувати Region",
-        "notFound": "No Regions found"
+        "title": "Область",
+        "refreshListLabel": "Оновити список",
+        "createLabel": "Створити нову область",
+        "createOrEditLabel": "Створити чи редагувати область",
+        "notFound": "Області не знайдені"
       },
-      "created": "Новий Region створений з ідентифікатором {{ param }}",
-      "updated": "Region оновлений з ідентифікатором {{ param }}",
-      "deleted": "Region видалений з ідентифікатором {{ param }}",
+      "created": "Нова область створена",
+      "updated": "Область оновлена",
+      "deleted": "Область видалена",
       "delete": {
-        "question": "Ви впевнені, що хочете видалити Region {{ id }}?"
+        "question": "Ви впевнені, що хочете видалити область?"
       },
       "detail": {
-        "title": "Region"
+        "title": "Область"
       },
-      "id": "ID",
-      "name": "Name",
-      "city": "City",
-      "country": "Country"
+      "id": "Ідентифікатор",
+      "name": "Назва",
+      "city": "Населений пункт",
+      "country": "Країна"
     }
   }
 }

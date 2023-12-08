@@ -2,26 +2,26 @@
   "utilityResourcesManagerApp": {
     "consumptionHistory": {
       "home": {
-        "title": "Consumption Histories",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Створити новий Consumption History",
-        "createOrEditLabel": "Створити чи редагувати Consumption History",
-        "notFound": "No Consumption Histories found"
+        "title": "Історія споживання",
+        "refreshListLabel": "Оновити список",
+        "createLabel": "Додати показник",
+        "createOrEditLabel": "Створити чи редагувати показник",
+        "notFound": "Історія споживання не знайдена"
       },
-      "created": "Новий Consumption History створений з ідентифікатором {{ param }}",
-      "updated": "Consumption History оновлений з ідентифікатором {{ param }}",
-      "deleted": "Consumption History видалений з ідентифікатором {{ param }}",
+      "created": "Новий показник створений",
+      "updated": "Показник оновлений",
+      "deleted": "Показник видалений",
       "delete": {
-        "question": "Ви впевнені, що хочете видалити Consumption History {{ id }}?"
+        "question": "Ви впевнені, що хочете видалити показник?"
       },
       "detail": {
-        "title": "Consumption History"
+        "title": "Історія споживання"
       },
-      "id": "ID",
-      "consumption": "Consumption",
-      "cost": "Cost",
-      "date": "Date",
-      "householdUtility": "Household Utility"
+      "id": "Ідентифікатор",
+      "consumption": "Споживання",
+      "cost": "Ціна",
+      "date": "Дата",
+      "householdUtility": "Комунальна послуга"
     }
   }
 }

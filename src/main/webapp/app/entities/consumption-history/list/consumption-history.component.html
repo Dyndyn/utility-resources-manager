@@ -24,7 +24,7 @@
 
   <jhi-alert></jhi-alert>
 
-  <jhi-filter [filters]="filters"></jhi-filter>
+  <!--  <jhi-filter [filters]="filters"></jhi-filter>-->
 
   <div class="alert alert-warning" id="no-result" *ngIf="consumptionHistories?.length === 0">
     <span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.home.notFound">No Consumption Histories found</span>
@@ -34,12 +34,6 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="id">
-            <div class="d-flex">
-              <span jhiTranslate="global.field.id">ID</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
           <th scope="col" jhiSortBy="consumption">
             <div class="d-flex">
               <span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.consumption">Consumption</span>
@@ -70,9 +64,8 @@
       <tbody>
         <tr *ngFor="let consumptionHistory of consumptionHistories; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/consumption-history', consumptionHistory.id, 'view']">{{ consumptionHistory.id }}</a>
+            <a [routerLink]="['/consumption-history', consumptionHistory.id, 'view']">{{ consumptionHistory.consumption }}</a>
           </td>
-          <td>{{ consumptionHistory.consumption }}</td>
           <td>{{ consumptionHistory.cost }}</td>
           <td>{{ consumptionHistory.date | formatMediumDate }}</td>
           <td>

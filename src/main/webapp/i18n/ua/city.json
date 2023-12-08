@@ -2,25 +2,25 @@
   "utilityResourcesManagerApp": {
     "city": {
       "home": {
-        "title": "Cities",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Створити новий City",
-        "createOrEditLabel": "Створити чи редагувати City",
-        "notFound": "No Cities found"
+        "title": "Населені Пункти",
+        "refreshListLabel": "Оновити список",
+        "createLabel": "Створити новий населений пункт",
+        "createOrEditLabel": "Створити чи редагувати населений пункт",
+        "notFound": "Населених пунктів не знайдено"
       },
-      "created": "Новий City створений з ідентифікатором {{ param }}",
-      "updated": "City оновлений з ідентифікатором {{ param }}",
-      "deleted": "City видалений з ідентифікатором {{ param }}",
+      "created": "Новий населений пункт створений з ідентифікатором {{ param }}",
+      "updated": "Населений пункт оновлений з ідентифікатором {{ param }}",
+      "deleted": "Населений пункт видалений з ідентифікатором {{ param }}",
       "delete": {
-        "question": "Ви впевнені, що хочете видалити City {{ id }}?"
+        "question": "Ви впевнені, що хочете видалити населений пункт {{ id }}?"
       },
       "detail": {
-        "title": "City"
+        "title": "Населений пункт"
       },
-      "id": "ID",
-      "name": "Name",
-      "household": "Household",
-      "region": "Region"
+      "id": "Ідентифікатор",
+      "name": "Назва",
+      "household": "Домогосподарство",
+      "region": "Регіон"
     }
   }
 }

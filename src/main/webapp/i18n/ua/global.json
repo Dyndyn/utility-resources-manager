@@ -6,16 +6,16 @@
       "home": "Головна",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
-        "main": "Сутності",
+        "main": "Навігація",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
-        "city": "City",
-        "region": "Region",
-        "country": "Country",
-        "utility": "Utility",
-        "utilityProvider": "Utility Provider",
-        "household": "Household",
-        "householdUtility": "Household Utility",
-        "consumptionHistory": "Consumption History"
+        "city": "Населений пункт",
+        "region": "Область",
+        "country": "Країна",
+        "utility": "Тип комунальних послуг",
+        "utilityProvider": "Постачальник послуг",
+        "household": "Домогосподарство",
+        "householdUtility": "Комунальна послуга",
+        "consumptionHistory": "Історія споживання"
       },
       "account": {
         "main": "Профіль",
@@ -86,7 +86,7 @@
       }
     },
     "field": {
-      "id": "ID"
+      "id": "Ідентифікатор"
     },
     "ribbon": {
       "dev": "Розробка"

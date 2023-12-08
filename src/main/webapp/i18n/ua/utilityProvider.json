@@ -2,28 +2,28 @@
   "utilityResourcesManagerApp": {
     "utilityProvider": {
       "home": {
-        "title": "Utility Providers",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Створити новий Utility Provider",
-        "createOrEditLabel": "Створити чи редагувати Utility Provider",
-        "notFound": "No Utility Providers found"
+        "title": "Постачальники послуг",
+        "refreshListLabel": "Оновити список",
+        "createLabel": "Створити нового постачальника послуг",
+        "createOrEditLabel": "Створити чи редагувати постачальника послуг",
+        "notFound": "Постачальники послуг не знайдені"
       },
-      "created": "Новий Utility Provider створений з ідентифікатором {{ param }}",
-      "updated": "Utility Provider оновлений з ідентифікатором {{ param }}",
-      "deleted": "Utility Provider видалений з ідентифікатором {{ param }}",
+      "created": "Новий постачальник послуг створений з ідентифікатором {{ param }}",
+      "updated": "Постачальник послуг оновлений з ідентифікатором {{ param }}",
+      "deleted": "Постачальник послуг видалений з ідентифікатором {{ param }}",
       "delete": {
-        "question": "Ви впевнені, що хочете видалити Utility Provider {{ id }}?"
+        "question": "Ви впевнені, що хочете видалити постачальника послуг {{ id }}?"
       },
       "detail": {
-        "title": "Utility Provider"
+        "title": "Постачальник послуг"
       },
-      "id": "ID",
-      "name": "Name",
+      "id": "Ідентифікатор",
+      "name": "назва",
       "iban": "Iban",
-      "usreou": "Usreou",
-      "rate": "Rate",
-      "householdUtility": "Household Utility",
-      "utility": "Utility"
+      "usreou": "Код ЄДРПОУ",
+      "rate": "Ціна",
+      "householdUtility": "Комунальна послуга",
+      "utility": "Тип комунальних послуг"
     }
   }
 }

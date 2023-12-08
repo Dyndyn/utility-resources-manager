@@ -2,24 +2,24 @@
   "utilityResourcesManagerApp": {
     "country": {
       "home": {
-        "title": "Countries",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Створити новий Country",
-        "createOrEditLabel": "Створити чи редагувати Country",
-        "notFound": "No Countries found"
+        "title": "Країни",
+        "refreshListLabel": "Оновити список",
+        "createLabel": "Створити нову країну",
+        "createOrEditLabel": "Створити чи редагувати країну",
+        "notFound": "Країни не знайдені"
       },
-      "created": "Новий Country створений з ідентифікатором {{ param }}",
-      "updated": "Country оновлений з ідентифікатором {{ param }}",
-      "deleted": "Country видалений з ідентифікатором {{ param }}",
+      "created": "Нова країна створена",
+      "updated": "Країна оновлена",
+      "deleted": "Країна видалена",
       "delete": {
-        "question": "Ви впевнені, що хочете видалити Country {{ id }}?"
+        "question": "Ви впевнені, що хочете видалити країну?"
       },
       "detail": {
-        "title": "Country"
+        "title": "Країна"
       },
-      "id": "ID",
-      "name": "Name",
-      "region": "Region"
+      "id": "Ідентифікатор",
+      "name": "Назва",
+      "region": "Регіон"
     }
   }
 }

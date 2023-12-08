@@ -2,28 +2,28 @@
   "utilityResourcesManagerApp": {
     "household": {
       "home": {
-        "title": "Households",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Створити новий Household",
-        "createOrEditLabel": "Створити чи редагувати Household",
-        "notFound": "No Households found"
+        "title": "Домогосподарства",
+        "refreshListLabel": "Оновити список",
+        "createLabel": "Створити нове домогосподарство",
+        "createOrEditLabel": "Створити чи редагувати домогосподарство",
+        "notFound": "Домогосподарства не знайдені"
       },
-      "created": "Новий Household створений з ідентифікатором {{ param }}",
-      "updated": "Household оновлений з ідентифікатором {{ param }}",
-      "deleted": "Household видалений з ідентифікатором {{ param }}",
+      "created": "Нове домогосподарство створено з ідентифікатором {{ param }}",
+      "updated": "Домогосподарство оновлене",
+      "deleted": "Домогосподарство видалене",
       "delete": {
-        "question": "Ви впевнені, що хочете видалити Household {{ id }}?"
+        "question": "Ви впевнені, що хочете видалити домогосподарство?"
       },
       "detail": {
-        "title": "Household"
+        "title": "Домогосподарство"
       },
-      "id": "ID",
-      "address": "Address",
-      "area": "Area",
-      "residents": "Residents",
-      "householdUtility": "Household Utility",
-      "user": "User",
-      "city": "City"
+      "id": "Ідентифікатор",
+      "address": "Адреса",
+      "area": "Площа",
+      "residents": "Кількість мешканців",
+      "householdUtility": "Комунальна послуга",
+      "user": "Користувач",
+      "city": "Населений пункт"
     }
   }
 }
