@@ -23,7 +23,7 @@ export class ConsumptionHistoryUpdateComponent implements OnInit {
   isSaving = false;
   consumptionHistory: IConsumptionHistory | null = null;
 
-  householdUtilitiesSharedCollection: IHouseholdUtility[] = [];
+  householdUtility: IHouseholdUtility | null = null;
 
   editForm: ConsumptionHistoryFormGroup = this.consumptionHistoryFormService.createConsumptionHistoryFormGroup();
 
@@ -42,9 +42,12 @@ export class ConsumptionHistoryUpdateComponent implements OnInit {
       this.consumptionHistory = consumptionHistory;
       if (consumptionHistory) {
         this.updateForm(consumptionHistory);
+        this.loadRelationshipsOptions(consumptionHistory.householdUtility.id);
+      } else {
+        this.activatedRoute.queryParams.subscribe(params => {
+          this.loadRelationshipsOptions(params['householdUtilityId']);
+        });
       }
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -84,25 +87,13 @@ export class ConsumptionHistoryUpdateComponent implements OnInit {
   protected updateForm(consumptionHistory: IConsumptionHistory): void {
     this.consumptionHistory = consumptionHistory;
     this.consumptionHistoryFormService.resetForm(this.editForm, consumptionHistory);
-
-    this.householdUtilitiesSharedCollection = this.householdUtilityService.addHouseholdUtilityToCollectionIfMissing<IHouseholdUtility>(
-      this.householdUtilitiesSharedCollection,
-      consumptionHistory.householdUtility,
-    );
   }
 
-  protected loadRelationshipsOptions(): void {
-    this.householdUtilityService
-      .query()
-      .pipe(map((res: HttpResponse<IHouseholdUtility[]>) => res.body ?? []))
-      .pipe(
-        map((householdUtilities: IHouseholdUtility[]) =>
-          this.householdUtilityService.addHouseholdUtilityToCollectionIfMissing<IHouseholdUtility>(
-            householdUtilities,
-            this.consumptionHistory?.householdUtility,
-          ),
-        ),
-      )
-      .subscribe((householdUtilities: IHouseholdUtility[]) => (this.householdUtilitiesSharedCollection = householdUtilities));
+  protected loadRelationshipsOptions(id: number): void {
+    this.householdUtilityService.find(id).subscribe((householdUtility: HttpResponse<IHouseholdUtility>) => {
+      this.householdUtility = householdUtility.body;
+      this.householdUtility = { id: this.householdUtility!.id, name: this.householdUtility!.name };
+      this.editForm.get(['householdUtility'])?.setValue(this.householdUtility);
+    });
   }
 }

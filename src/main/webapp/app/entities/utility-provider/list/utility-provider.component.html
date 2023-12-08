@@ -90,7 +90,7 @@
               <button
                 type="submit"
                 [routerLink]="['/household-utility']"
-                [queryParams]="{ 'filter[utilityProviderId.in]': utilityProvider.id }"
+                [queryParams]="{ 'filter[utilityProviderId.equals]': utilityProvider.id }"
                 class="btn btn-info btn-sm"
                 data-cy="filterOtherEntityButton"
               >

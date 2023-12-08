@@ -13,6 +13,7 @@
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-consumption-history"
         [routerLink]="['/consumption-history/new']"
+        [queryParams]="{ householdUtilityId: filters.filterOptions[0].values[0] }"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="utilityResourcesManagerApp.consumptionHistory.home.createLabel">Create a new Consumption History</span>

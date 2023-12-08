@@ -24,7 +24,7 @@
 
   <jhi-alert></jhi-alert>
 
-  <jhi-filter [filters]="filters"></jhi-filter>
+  <!--  <jhi-filter [filters]="filters"></jhi-filter>-->
 
   <div class="alert alert-warning" id="no-result" *ngIf="householdUtilities?.length === 0">
     <span jhiTranslate="utilityResourcesManagerApp.householdUtility.home.notFound">No Household Utilities found</span>
@@ -91,7 +91,7 @@
               <button
                 type="submit"
                 [routerLink]="['/consumption-history']"
-                [queryParams]="{ 'filter[householdUtilityId.in]': householdUtility.id }"
+                [queryParams]="{ 'filter[householdUtilityId.equals]': householdUtility.id }"
                 class="btn btn-info btn-sm"
                 data-cy="filterOtherEntityButton"
               >

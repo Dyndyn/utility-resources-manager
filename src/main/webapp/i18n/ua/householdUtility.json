@@ -22,7 +22,7 @@
       "accountId": "Номер особового рахунку",
       "rate": "Плата",
       "active": "Активний",
-      "consumptionHistory": "Історія споживання",
+      "consumptionHistory": "Історію споживання",
       "household": "Домогосподарство",
       "utilityProvider": "Постачальник послуг",
       "action": {

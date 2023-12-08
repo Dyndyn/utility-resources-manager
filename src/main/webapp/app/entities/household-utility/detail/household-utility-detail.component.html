@@ -75,7 +75,7 @@
       <button
         type="submit"
         [routerLink]="['/consumption-history']"
-        [queryParams]="{ 'filter[householdUtilityId.in]': householdUtility.id }"
+        [queryParams]="{ 'filter[householdUtilityId.equals]': householdUtility.id }"
         class="btn btn-info"
         data-cy="filterOtherEntityButton"
       >
