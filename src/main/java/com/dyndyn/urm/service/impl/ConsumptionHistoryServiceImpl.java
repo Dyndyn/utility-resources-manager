@@ -1,7 +1,9 @@
 package com.dyndyn.urm.service.impl;
 
 import com.dyndyn.urm.domain.ConsumptionHistory;
+import com.dyndyn.urm.domain.HouseholdUtility;
 import com.dyndyn.urm.repository.ConsumptionHistoryRepository;
+import com.dyndyn.urm.repository.HouseholdUtilityRepository;
 import com.dyndyn.urm.service.ConsumptionHistoryService;
 import com.dyndyn.urm.service.ConsumptionPredictionService;
 import com.dyndyn.urm.service.dto.ConsumptionHistoryDTO;
@@ -25,16 +27,19 @@ public class ConsumptionHistoryServiceImpl implements ConsumptionHistoryService 
 
     private final ConsumptionHistoryRepository consumptionHistoryRepository;
     private final ConsumptionPredictionService consumptionPredictionService;
+    private final HouseholdUtilityRepository householdUtilityRepository;
 
     private final ConsumptionHistoryMapper consumptionHistoryMapper;
 
     public ConsumptionHistoryServiceImpl(
         ConsumptionHistoryRepository consumptionHistoryRepository,
         ConsumptionPredictionService consumptionPredictionService,
+        HouseholdUtilityRepository householdUtilityRepository,
         ConsumptionHistoryMapper consumptionHistoryMapper
     ) {
         this.consumptionHistoryRepository = consumptionHistoryRepository;
         this.consumptionPredictionService = consumptionPredictionService;
+        this.householdUtilityRepository = householdUtilityRepository;
         this.consumptionHistoryMapper = consumptionHistoryMapper;
     }
 
@@ -43,8 +48,9 @@ public class ConsumptionHistoryServiceImpl implements ConsumptionHistoryService 
         log.debug("Request to save ConsumptionHistory : {}", consumptionHistoryDTO);
         ConsumptionHistory consumptionHistory = consumptionHistoryMapper.toEntity(consumptionHistoryDTO);
         consumptionHistory.setDate(consumptionHistory.getDate().withDayOfMonth(1));
+        HouseholdUtility householdUtility = householdUtilityRepository.findById(consumptionHistoryDTO.getHouseholdUtility().getId()).get();
+        consumptionHistory.setCost(consumptionHistory.getConsumption().multiply(householdUtility.getRate()));
         consumptionHistory = consumptionHistoryRepository.save(consumptionHistory);
-        consumptionHistory.setCost(consumptionHistory.getConsumption().multiply(consumptionHistory.getHouseholdUtility().getRate()));
         consumptionPredictionService.generatePredictions(consumptionHistory.getHouseholdUtility().getId());
         return consumptionHistoryMapper.toDto(consumptionHistory);
     }

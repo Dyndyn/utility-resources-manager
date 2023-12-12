@@ -12,13 +12,12 @@ import { HouseholdUtilityService } from 'app/entities/household-utility/service/
 import { IConsumptionHistory } from '../consumption-history.model';
 import { ConsumptionHistoryService } from '../service/consumption-history.service';
 import { ConsumptionHistoryFormService, ConsumptionHistoryFormGroup } from './consumption-history-form.service';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Moment } from 'moment';
-import moment from 'moment';
+import { DayjsDateAdapter, MAT_DAYJS_DATE_ADAPTER_OPTIONS } from 'material-dayjs-date-adapter';
+import dayjs from 'dayjs/esm';
 
 export const MY_FORMATS = {
   parse: {
@@ -39,8 +38,8 @@ export const MY_FORMATS = {
   providers: [
     {
       provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+      useClass: DayjsDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_DAYJS_DATE_ADAPTER_OPTIONS],
     },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
@@ -124,10 +123,11 @@ export class ConsumptionHistoryUpdateComponent implements OnInit {
       this.editForm.get(['householdUtility'])?.setValue(this.householdUtility);
     });
   }
-  setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
-    const ctrlValue = this.editForm.get(['date'])?.value ?? moment();
-    ctrlValue.month(normalizedMonthAndYear.month());
-    ctrlValue.year(normalizedMonthAndYear.year());
+  setMonthAndYear(normalizedMonthAndYear: dayjs.Dayjs, datepicker: MatDatepicker<dayjs.Dayjs>) {
+    let ctrlValue = this.editForm.get(['date'])?.value ?? dayjs();
+    ctrlValue = ctrlValue.day(1);
+    ctrlValue = ctrlValue.month(normalizedMonthAndYear.month());
+    ctrlValue = ctrlValue.year(normalizedMonthAndYear.year());
     this.editForm.get(['date'])?.setValue(ctrlValue);
     datepicker.close();
   }

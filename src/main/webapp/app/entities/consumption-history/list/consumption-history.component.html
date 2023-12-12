@@ -68,7 +68,7 @@
             <a [routerLink]="['/consumption-history', consumptionHistory.id, 'view']">{{ consumptionHistory.consumption }}</a>
           </td>
           <td>{{ consumptionHistory.cost }}</td>
-          <td>{{ consumptionHistory.date | formatMediumDate }}</td>
+          <td>{{ consumptionHistory.date | formatMonthYearDate }}</td>
           <td>
             <div *ngIf="consumptionHistory.householdUtility">
               <a [routerLink]="['/household-utility', consumptionHistory.householdUtility.id, 'view']">{{

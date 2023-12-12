@@ -43,12 +43,10 @@ public class HouseholdUtility implements Serializable {
     private Boolean active;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "householdUtility")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "householdUtility" }, allowSetters = true)
     private Set<ConsumptionHistory> consumptionHistories = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "householdUtility")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "householdUtility" }, allowSetters = true)
     private Set<ConsumptionPrediction> consumptionPredictions = new HashSet<>();
 

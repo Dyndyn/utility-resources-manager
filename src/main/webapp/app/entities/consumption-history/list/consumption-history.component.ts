@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
 import { SortDirective, SortByDirective } from 'app/shared/sort';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
+import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe, FormatMonthYearDatePipe } from 'app/shared/date';
 import { ItemCountComponent } from 'app/shared/pagination';
 import { FormsModule } from '@angular/forms';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
@@ -30,6 +30,7 @@ import { ConsumptionHistoryDeleteDialogComponent } from '../delete/consumption-h
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
+    FormatMonthYearDatePipe,
     FilterComponent,
     ItemCountComponent,
   ],
