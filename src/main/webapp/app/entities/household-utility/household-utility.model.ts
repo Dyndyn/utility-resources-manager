@@ -17,6 +17,7 @@ export interface IHouseholdUtility {
   consumption?: GraphData | null;
   predictedConsumption?: GraphData | null;
   cost?: GraphData | null;
+  predictedCost?: GraphData | null;
 }
 
 export type NewHouseholdUtility = Omit<IHouseholdUtility, 'id'> & { id: null };

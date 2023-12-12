@@ -10,6 +10,7 @@ export interface IHousehold {
   users?: Pick<IUser, 'id' | 'firstName' | 'lastName'>[] | null;
   city?: Pick<ICity, 'id' | 'name'> | null;
   costs?: GraphData | null;
+  predictedCosts?: GraphData | null;
 }
 
 export type NewHousehold = Omit<IHousehold, 'id'> & { id: null };

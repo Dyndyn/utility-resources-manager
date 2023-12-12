@@ -1,6 +1,7 @@
 package com.dyndyn.urm.service.impl;
 
 import com.dyndyn.urm.domain.ConsumptionHistory;
+import com.dyndyn.urm.domain.ConsumptionPrediction;
 import com.dyndyn.urm.domain.Household;
 import com.dyndyn.urm.repository.HouseholdRepository;
 import com.dyndyn.urm.security.SecurityUtils;
@@ -103,10 +104,29 @@ public class HouseholdServiceImpl implements HouseholdService {
                             Collectors.mapping(ConsumptionHistory::getCost, Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))
                         )
                     );
+                Map<LocalDate, BigDecimal> monthlyCostPrediction = s
+                    .getHouseholdUtilities()
+                    .stream()
+                    .flatMap(hu -> hu.getConsumptionPredictions().stream())
+                    .collect(
+                        Collectors.groupingBy(
+                            ConsumptionPrediction::getDate,
+                            Collectors.mapping(
+                                cp -> cp.getConsumption().multiply(cp.getHouseholdUtility().getRate()),
+                                Collectors.reducing(BigDecimal.ZERO, BigDecimal::add)
+                            )
+                        )
+                    );
                 dto.setCosts(
                     new GraphDataDTO(
                         monthlyCosts.keySet().stream().sorted().toList(),
                         monthlyCosts.entrySet().stream().sorted(Comparator.comparing(Entry::getKey)).map(Entry::getValue).toList()
+                    )
+                );
+                dto.setPredictedCosts(
+                    new GraphDataDTO(
+                        monthlyCostPrediction.keySet().stream().sorted().toList(),
+                        monthlyCostPrediction.entrySet().stream().sorted(Comparator.comparing(Entry::getKey)).map(Entry::getValue).toList()
                     )
                 );
                 return dto;

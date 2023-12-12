@@ -56,6 +56,9 @@
         [labels]="householdUtility.cost!.month"
         [data]="householdUtility.cost!.data"
         [label]="'Costs'"
+        [predictedLabels]="householdUtility.predictedCost!.month"
+        [predictedData]="householdUtility.predictedCost!.data"
+        [predictedLabel]="'Prediction'"
       ></jhi-household-utility-chart>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

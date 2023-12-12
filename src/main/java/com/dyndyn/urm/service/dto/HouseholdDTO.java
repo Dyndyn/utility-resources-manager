@@ -29,6 +29,7 @@ public class HouseholdDTO implements Serializable {
     private CityDTO city;
 
     private GraphDataDTO costs;
+    private GraphDataDTO predictedCosts;
 
     public Long getId() {
         return id;
@@ -84,6 +85,14 @@ public class HouseholdDTO implements Serializable {
 
     public void setCosts(GraphDataDTO costs) {
         this.costs = costs;
+    }
+
+    public GraphDataDTO getPredictedCosts() {
+        return predictedCosts;
+    }
+
+    public void setPredictedCosts(GraphDataDTO predictedCosts) {
+        this.predictedCosts = predictedCosts;
     }
 
     @Override

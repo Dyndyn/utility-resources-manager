@@ -135,6 +135,17 @@ public class HouseholdUtilityServiceImpl implements HouseholdUtilityService {
                             .toList()
                     )
                 );
+                dto.setPredictedCost(
+                    new GraphDataDTO(
+                        s.getConsumptionPredictions().stream().map(ConsumptionPrediction::getDate).sorted().toList(),
+                        s
+                            .getConsumptionPredictions()
+                            .stream()
+                            .sorted(Comparator.comparing(ConsumptionPrediction::getDate))
+                            .map(cp -> cp.getConsumption().multiply(s.getRate()))
+                            .toList()
+                    )
+                );
                 return dto;
             });
     }
