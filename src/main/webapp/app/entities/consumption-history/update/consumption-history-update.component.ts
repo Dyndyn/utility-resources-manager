@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -12,12 +12,40 @@ import { HouseholdUtilityService } from 'app/entities/household-utility/service/
 import { IConsumptionHistory } from '../consumption-history.model';
 import { ConsumptionHistoryService } from '../service/consumption-history.service';
 import { ConsumptionHistoryFormService, ConsumptionHistoryFormGroup } from './consumption-history-form.service';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { Moment } from 'moment';
+import moment from 'moment';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   standalone: true,
   selector: 'jhi-consumption-history-update',
   templateUrl: './consumption-history-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ],
+  encapsulation: ViewEncapsulation.None,
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, MatDatepickerModule, MatInputModule, MatFormFieldModule],
 })
 export class ConsumptionHistoryUpdateComponent implements OnInit {
   isSaving = false;
@@ -95,5 +123,12 @@ export class ConsumptionHistoryUpdateComponent implements OnInit {
       this.householdUtility = { id: this.householdUtility!.id, name: this.householdUtility!.name };
       this.editForm.get(['householdUtility'])?.setValue(this.householdUtility);
     });
+  }
+  setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
+    const ctrlValue = this.editForm.get(['date'])?.value ?? moment();
+    ctrlValue.month(normalizedMonthAndYear.month());
+    ctrlValue.year(normalizedMonthAndYear.year());
+    this.editForm.get(['date'])?.setValue(ctrlValue);
+    datepicker.close();
   }
 }

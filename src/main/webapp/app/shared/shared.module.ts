@@ -9,6 +9,7 @@ import FindLanguageFromKeyPipe from './language/find-language-from-key.pipe';
 import TranslateDirective from './language/translate.directive';
 import { AlertComponent } from './alert/alert.component';
 import { AlertErrorComponent } from './alert/alert-error.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 /**
  * Application wide Module
@@ -18,6 +19,7 @@ import { AlertErrorComponent } from './alert/alert-error.component';
   exports: [
     CommonModule,
     NgChartsModule,
+    MatDatepickerModule,
     NgbModule,
     FontAwesomeModule,
     AlertComponent,

@@ -47,17 +47,14 @@
         <div class="mb-3">
           <label class="form-label" jhiTranslate="utilityResourcesManagerApp.consumptionHistory.date" for="field_date">Date</label>
           <div class="input-group">
-            <input
-              id="field_date"
-              data-cy="date"
-              type="text"
-              class="form-control"
-              name="date"
-              ngbDatepicker
-              #dateDp="ngbDatepicker"
-              formControlName="date"
-            />
-            <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+            <mat-form-field>
+              <mat-label>Month and Year</mat-label>
+              <input matInput [matDatepicker]="dp" id="field_date" data-cy="date" class="form-control" name="date" formControlName="date" />
+              <mat-hint>MM/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+              <mat-datepicker #dp startView="multi-year" (monthSelected)="setMonthAndYear($event, dp)" panelClass="example-month-picker">
+              </mat-datepicker>
+            </mat-form-field>
           </div>
           <div *ngIf="editForm.get('date')!.invalid && (editForm.get('date')!.dirty || editForm.get('date')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('date')?.errors?.required" jhiTranslate="entity.validation.required"

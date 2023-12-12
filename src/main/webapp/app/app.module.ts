@@ -6,6 +6,7 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { TitleStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import dayjs from 'dayjs/esm';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
@@ -40,6 +41,7 @@ import { NgChartsModule } from 'ng2-charts';
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },
+    provideAnimations(),
   ],
   bootstrap: [MainComponent],
 })
